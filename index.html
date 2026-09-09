@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>熱股雷達 · Kailin 的台股追蹤面板</title>
+<meta name="description" content="Kailin 的台股熱門排行與 AI 分析追蹤面板，資料來自 n8n workflow（kailinstock）。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <span class="dot"></span>
+        <span class="brand-name">熱股雷達</span>
+      </div>
+      <span class="brand-kicker">Taiwan Stock Radar</span>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-btn active" data-view="view-overview">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+        總覽
+      </button>
+      <button class="nav-btn" data-view="view-ranking">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"/><path d="M12 20V4"/><path d="M20 20v-6"/></svg>
+        熱門排行
+      </button>
+      <button class="nav-btn" data-view="view-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        個股分析
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      資料來源<br>
+      <strong>n8n · kailinstock</strong><br>
+      Kailin 的股票追蹤面板
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1 id="topbar-title">台股市場總覽</h1>
+      <div class="topbar-meta">
+        <span class="pill" id="pill-date">—</span>
+        <span class="pill loading" id="pill-live"><span class="blip"></span>載入中</span>
+      </div>
+    </div>
+
+    <div class="ticker-wrap">
+      <div class="ticker-track" id="ticker-track"></div>
+    </div>
+
+    <!-- ===== 總覽 ===== -->
+    <section class="view" id="view-overview">
+      <div class="stat-grid" id="stat-grid"></div>
+
+      <div class="section-head">
+        <h2>今日焦點</h2>
+        <span class="hint">依熱度分數排序第一名</span>
+      </div>
+      <div class="spotlight-grid" id="spotlight-grid"></div>
+    </section>
+
+    <!-- ===== 熱門排行 ===== -->
+    <section class="view" id="view-ranking" hidden>
+      <div class="report-row">
+        <div class="card">
+          <div class="card-head"><h3>🔥 熱門股票 Top 5</h3><span class="hint">近三個交易日</span></div>
+          <div class="card-body"><ul class="rank-list" id="list-stocks"></ul></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Claude AI 個股分析</h3><span class="hint">n8n 產出</span></div>
+          <div class="card-body prose" id="ai-stocks"></div>
+        </div>
+      </div>
+
+      <div class="report-row">
+        <div class="card">
+          <div class="card-head"><h3>📊 熱門 ETF Top 5</h3><span class="hint">近三個交易日</span></div>
+          <div class="card-body"><ul class="rank-list" id="list-etfs"></ul></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Claude AI ETF 分析</h3><span class="hint">n8n 產出</span></div>
+          <div class="card-body prose" id="ai-etfs"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 個股分析 ===== -->
+    <section class="view" id="view-search" hidden>
+      <div class="card search-card">
+        <div class="card-head"><h3>🔍 個股查詢</h3><span class="hint">stock-analysis workflow</span></div>
+        <div class="card-body prose" style="padding:20px 22px;">
+          <p class="search-intro">輸入股票代號，即時呼叫 n8n 的 <code>stock-analysis</code> workflow，取得技術面、月營收、法人買賣與新聞整理後的 AI 分析。</p>
+          <form class="search-form" id="search-form">
+            <input type="text" id="search-input" class="mono" placeholder="例如 2330" inputmode="numeric" autocomplete="off">
+            <button type="submit" id="search-btn">查詢</button>
+          </form>
+          <div class="search-status" id="search-status">
+            <span class="conn-dot" id="conn-dot"></span>
+            <span id="search-status-text">尚未查詢</span>
+          </div>
+          <div class="result-area" id="result-area">
+            <p class="result-empty">查詢結果會顯示在這裡。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="assets/app.js" defer></script>
+</body>
+</html>
