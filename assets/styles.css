@@ -58,7 +58,7 @@
     -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3,h4,h5{
-    font-family:"Noto Serif TC","Noto Serif",serif;
+    font-family:"Noto Sans TC","Noto Sans","PingFang TC",sans-serif;
     margin:0;
     text-wrap:balance;
   }
@@ -88,7 +88,7 @@
     background:var(--accent);
     flex:none;
   }
-  .brand-name{ font-size:22px; font-weight:700; letter-spacing:0.5px; }
+  .brand-name{ font-size:22px; font-weight:700; letter-spacing:0.5px; white-space:nowrap; }
   .brand-kicker{
     font-family:"Roboto Mono",monospace;
     font-size:10px;
@@ -109,6 +109,8 @@
     font-size:14.5px;
     font-weight:500;
     color:var(--ink-muted);
+    white-space:nowrap;
+    flex:none;
   }
   .nav-btn svg{ width:18px; height:18px; flex:none; stroke:currentColor; }
   .nav-btn:hover{ background:var(--surface-2); color:var(--ink); }
@@ -146,6 +148,7 @@
     border:1px solid var(--border);
     color:var(--ink-muted);
     background:var(--surface-1);
+    white-space:nowrap;
   }
   .pill.live{ color:var(--down); border-color:transparent; background:var(--down-soft); }
   .pill.live .blip{
@@ -281,7 +284,7 @@
   .rank-num.top{ color:var(--accent); }
   .rank-id{ min-width:0; display:flex; flex-direction:column; gap:1px; }
   .rank-name{ font-weight:600; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .rank-code{ font-family:"Roboto Mono",monospace; font-size:10.5px; color:var(--ink-faint); }
+  .rank-code{ font-family:"Roboto Mono",monospace; font-size:10.5px; color:var(--ink-faint); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .rank-price{ font-family:"Roboto Mono",monospace; font-size:13.5px; font-weight:600; text-align:right; }
   .rank-pct{ font-family:"Roboto Mono",monospace; font-size:12.5px; font-weight:700; text-align:right; }
   .rank-pct.up{ color:var(--up); }
@@ -384,11 +387,11 @@
   }
   .holding-row:hover{ background:var(--surface-2); }
   .holding-id{ min-width:0; display:flex; flex-direction:column; gap:2px; }
-  .holding-name{ font-weight:600; font-size:14px; }
+  .holding-name{ font-weight:600; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .holding-meta{ font-family:"Roboto Mono",monospace; font-size:10.5px; color:var(--ink-faint); display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
   .holding-badge{
     display:inline-flex; align-items:center; gap:3px; padding:1px 6px; border-radius:6px;
-    font-size:10px; font-weight:700;
+    font-size:10px; font-weight:700; white-space:nowrap;
   }
   .holding-badge.target{ color:var(--accent); background:var(--accent-soft); }
   .holding-badge.stop{ color:var(--up); background:var(--up-soft); }
@@ -454,7 +457,7 @@
       padding:14px 20px;
     }
     .sidebar-foot{ display:none; }
-    .nav{ flex-direction:row; }
+    .nav{ flex-direction:row; overflow-x:auto; -webkit-overflow-scrolling:touch; }
     .brand-kicker{ display:none; }
     .stat-grid{ grid-template-columns:repeat(2,1fr); }
     .spotlight-grid{ grid-template-columns:1fr; }
