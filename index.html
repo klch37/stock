@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +33,10 @@
       <button class="nav-btn" data-view="view-search">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         個股分析
+      </button>
+      <button class="nav-btn" data-view="view-portfolio">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+        持股
       </button>
     </nav>
 
@@ -76,7 +80,7 @@
         </div>
         <div class="card">
           <div class="card-head"><h3>Claude AI 個股分析</h3><span class="hint">n8n 產出</span></div>
-          <div class="card-body prose" id="ai-stocks"></div>
+          <div class="card-body prose scroll-fade" id="ai-stocks"></div>
         </div>
       </div>
 
@@ -87,7 +91,7 @@
         </div>
         <div class="card">
           <div class="card-head"><h3>Claude AI ETF 分析</h3><span class="hint">n8n 產出</span></div>
-          <div class="card-body prose" id="ai-etfs"></div>
+          <div class="card-body prose scroll-fade" id="ai-etfs"></div>
         </div>
       </div>
     </section>
@@ -97,10 +101,11 @@
       <div class="card search-card">
         <div class="card-head"><h3>🔍 個股查詢</h3><span class="hint">stock-analysis workflow</span></div>
         <div class="card-body prose" style="padding:20px 22px;">
-          <p class="search-intro">輸入股票代號，即時呼叫 n8n 的 <code>stock-analysis</code> workflow，取得技術面、月營收、法人買賣與新聞整理後的 AI 分析。</p>
+          <p class="search-intro">輸入股票代號或名稱，即時呼叫 n8n 的 <code>stock-analysis</code> workflow，取得技術面、月營收、法人買賣與新聞整理後的 AI 分析報告。</p>
           <form class="search-form" id="search-form">
-            <input type="text" id="search-input" class="mono" placeholder="例如 2330" inputmode="numeric" autocomplete="off">
-            <button type="submit" id="search-btn">查詢</button>
+            <input type="text" id="search-input" class="mono" placeholder="例如 2330 或 台積電" list="stock-suggestions" autocomplete="off">
+            <datalist id="stock-suggestions"></datalist>
+            <button type="submit" id="search-btn">執行</button>
           </form>
           <div class="search-status" id="search-status">
             <span class="conn-dot" id="conn-dot"></span>
@@ -112,8 +117,78 @@
         </div>
       </div>
     </section>
+
+    <!-- ===== 持股 ===== -->
+    <section class="view" id="view-portfolio" hidden>
+      <div class="card" style="margin-bottom:18px;">
+        <div class="card-body prose" style="padding:16px 22px;">
+          <div class="profile-bar" id="profile-bar"></div>
+        </div>
+      </div>
+
+      <div id="portfolio-content" hidden>
+        <div class="stat-grid" id="portfolio-stats"></div>
+
+        <div class="chart-row">
+          <div class="card">
+            <div class="card-head"><h3>資產配置</h3><span class="hint">依市值佔比</span></div>
+            <div class="card-body prose chart-card-body" id="chart-allocation"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>損益比較</h3><span class="hint">各檔持股</span></div>
+            <div class="card-body prose chart-card-body" id="chart-gainloss"></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px;">
+          <div class="card-head"><h3>總資產走勢</h3><span class="hint" id="chart-trend-hint"></span></div>
+          <div class="card-body prose chart-card-body" id="chart-trend"></div>
+        </div>
+
+        <div class="report-row portfolio-row">
+          <div class="card">
+            <div class="card-head"><h3>新增持股</h3></div>
+            <div class="card-body prose" style="padding:18px 20px;">
+              <form class="portfolio-form" id="portfolio-form">
+                <label class="pf-label">股票代號或名稱
+                  <input type="text" id="pf-code" class="mono" placeholder="例如 2330 或 台積電" list="stock-suggestions" autocomplete="off" required>
+                </label>
+                <div class="pf-row">
+                  <label class="pf-label">成本價
+                    <input type="number" id="pf-cost" class="mono" placeholder="0.00" step="0.01" min="0" required>
+                  </label>
+                  <label class="pf-label">股數
+                    <input type="number" id="pf-qty" class="mono" placeholder="0" step="1" min="1" required>
+                  </label>
+                </div>
+                <div class="pf-row">
+                  <label class="pf-label">目標價（選填）
+                    <input type="number" id="pf-target" class="mono" placeholder="—" step="0.01" min="0">
+                  </label>
+                  <label class="pf-label">停損價（選填）
+                    <input type="number" id="pf-stop" class="mono" placeholder="—" step="0.01" min="0">
+                  </label>
+                </div>
+                <div class="pf-actions">
+                  <button type="submit" id="pf-submit">加入持股</button>
+                  <button type="button" id="pf-cancel-edit" hidden>取消編輯</button>
+                </div>
+                <p class="pf-hint" id="pf-hint"></p>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>我的持股</h3><span class="hint" id="portfolio-updated"></span></div>
+            <div class="card-body"><ul class="holding-list" id="holding-list"></ul></div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </div>
+
+<div class="chart-tooltip" id="chart-tooltip" hidden></div>
 
 <script src="assets/app.js" defer></script>
 </body>
