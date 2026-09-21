@@ -523,14 +523,14 @@
 
   /* ---------- responsive ---------- */
   @media (max-width:860px){
-    .app{ grid-template-columns:1fr; }
+    .app{ grid-template-columns:minmax(0,1fr); }
     .sidebar{
       flex-direction:row; align-items:center; justify-content:space-between;
       border-right:none; border-bottom:1px solid var(--border);
-      padding:14px 20px;
+      padding:14px 20px; min-width:0;
     }
     .sidebar-foot{ display:none; }
-    .nav{ flex-direction:row; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .nav{ flex-direction:row; overflow-x:auto; -webkit-overflow-scrolling:touch; min-width:0; flex:1 1 auto; }
     .brand-kicker{ display:none; }
     .stat-grid{ grid-template-columns:repeat(2,1fr); }
     .spotlight-grid{ grid-template-columns:1fr; }
