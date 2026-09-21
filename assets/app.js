@@ -5,7 +5,6 @@
 const HOT_STOCKS_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks";
 const STOCK_ANALYSIS_ENDPOINT = "https://kailinstock.zeabur.app/webhook/stock-analysis";
 const LOCAL_SNAPSHOT_PATH = "data/snapshot.json";
-const LIVE_REFRESH_INTERVAL_MS = 60 * 1000;
 
 // 內建保底快照：即使 data/snapshot.json 也抓不到（例如直接雙擊開啟 index.html，
 // 瀏覽器會擋掉 file:// 底下的 fetch），頁面仍能顯示這份資料，不會開天窗。
@@ -198,8 +197,7 @@ async function init(){
     SNAPSHOT = BUNDLED_FALLBACK_SNAPSHOT;
   }
   renderAll();
-  refreshLive();
-  setInterval(refreshLive, LIVE_REFRESH_INTERVAL_MS);
+  refreshLive(); // 只在頁面載入/重新整理時抓一次即時資料，不背景輪詢
 }
 
 // ---------- stock search ----------
