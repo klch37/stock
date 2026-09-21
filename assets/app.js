@@ -402,6 +402,18 @@ function clearProfileId(){
   try { localStorage.removeItem(PROFILE_STORAGE_KEY); } catch (err){ /* ignore */ }
 }
 
+let amountsHidden = false;
+try { amountsHidden = localStorage.getItem('stockRadar.amountsHidden') === '1'; } catch (err){ /* ignore */ }
+
+function applyHideState(){
+  portfolioContent.classList.toggle('amounts-hidden', amountsHidden);
+  const btn = document.getElementById('pf-toggle-hide');
+  if (btn){
+    btn.textContent = amountsHidden ? '🙈' : '👁️';
+    btn.title = amountsHidden ? '顯示金額' : '隱藏金額';
+  }
+}
+
 function renderProfileBar(){
   const profileId = getProfileId();
   if (!profileId){
@@ -426,6 +438,8 @@ function renderProfileBar(){
     profileBar.innerHTML = `
       <div class="pf-current">
         身份：<strong>${escapeHtml(profileId)}</strong>
+        <button class="pf-icon-btn" id="pf-refresh" type="button" title="重新整理現價">⟳</button>
+        <button class="pf-icon-btn" id="pf-toggle-hide" type="button" title="隱藏金額">👁️</button>
         <button class="pf-switch" id="profile-switch" type="button">切換身份</button>
       </div>`;
     document.getElementById('profile-switch').addEventListener('click', () => {
@@ -433,7 +447,18 @@ function renderProfileBar(){
       currentHoldings = [];
       renderProfileBar();
     });
+    document.getElementById('pf-refresh').addEventListener('click', (e) => {
+      const btn = e.currentTarget;
+      btn.classList.add('spinning');
+      loadPortfolio().finally(() => btn.classList.remove('spinning'));
+    });
+    document.getElementById('pf-toggle-hide').addEventListener('click', () => {
+      amountsHidden = !amountsHidden;
+      try { localStorage.setItem('stockRadar.amountsHidden', amountsHidden ? '1' : '0'); } catch (err){ /* ignore */ }
+      applyHideState();
+    });
     portfolioContent.hidden = false;
+    applyHideState();
   }
 }
 
@@ -530,10 +555,18 @@ function buildDonut(items, { centerLabel, maxSlices = 6 } = {}){
     return `<path class="viz-mark" d="${d}" ${fillAttr} style="stroke:var(--surface-1);stroke-width:2;" data-tt-title="${escapeHtml(s.name)}" data-tt-rows="${ttRows}"></path>`;
   }).join('');
 
-  const legend = slices.map((s, i) => {
+  // 排行榜式橫條：色塊直接當條狀圖的底色，比純圖例更容易一眼比較大小
+  const rankedCount = Math.min(slices.length, 5);
+  const cumPct = (slices.slice(0, rankedCount).reduce((s, x) => s + x.value, 0) / total * 100).toFixed(1);
+  const rankBars = slices.slice(0, rankedCount).map((s, i) => {
     const color = isOtherSlice(s, i) ? 'var(--ink-faint)' : CHART_PALETTE[i % CHART_PALETTE.length];
-    const pct = ((s.value / total) * 100).toFixed(1);
-    return `<div class="legend-row"><span class="legend-swatch" style="background:${color}"></span><span class="legend-name">${escapeHtml(s.name)}</span><span class="legend-value">${pct}%</span></div>`;
+    const pct = (s.value / total) * 100;
+    return `
+    <div class="rank-bar-row viz-mark" data-tt-title="${escapeHtml(s.name)}" data-tt-rows="${escapeHtml('市值 ' + fmtPrice(Math.round(s.value)))}||${escapeHtml('佔比 ' + pct.toFixed(1) + '%')}">
+      <span class="rank-bar-name">${escapeHtml(s.name)}</span>
+      <span class="rank-bar-track"><span class="rank-bar-fill" style="width:${pct.toFixed(1)}%; background:${color};"></span></span>
+      <span class="rank-bar-pct">${pct.toFixed(1)}%</span>
+    </div>`;
   }).join('');
 
   return `
@@ -543,7 +576,10 @@ function buildDonut(items, { centerLabel, maxSlices = 6 } = {}){
         <text x="80" y="76" text-anchor="middle" class="donut-total-value">${fmtCompact(total)}</text>
         <text x="80" y="92" text-anchor="middle" class="donut-total-label">${escapeHtml(centerLabel || '')}</text>
       </svg>
-      <div class="chart-legend" style="flex:1; min-width:140px;">${legend}</div>
+      <div style="flex:1; min-width:160px;">
+        <div class="rank-bar-header">前 ${rankedCount} 大 <span>合計佔 ${cumPct}%</span></div>
+        ${rankBars}
+      </div>
     </div>`;
 }
 
@@ -730,6 +766,7 @@ async function renderPortfolio(){
   if (!currentHoldings.length){
     lastComputedRows = [];
     holdingListEl.innerHTML = '<li class="result-empty" style="padding:16px;">還沒有持股，從左邊表單新增第一筆吧。</li>';
+    document.getElementById('portfolio-hero').innerHTML = '';
     portfolioStatsEl.innerHTML = '';
     portfolioUpdatedEl.textContent = '';
     document.getElementById('chart-allocation').innerHTML = '<p class="chart-empty">還沒有持股可以分析。</p>';
@@ -790,11 +827,14 @@ async function renderPortfolio(){
   const totalGain = totalValue - totalCost;
   const totalGainPct = totalCost > 0 ? (totalGain / totalCost) * 100 : 0;
   const gainUp = totalGain >= 0;
+
+  document.getElementById('portfolio-hero').innerHTML = `
+    <div class="stat-label">總市值</div>
+    <div class="hero-value mono">${fmtPrice(Math.round(totalValue))}<span class="hero-pct" style="color:${gainUp ? 'var(--up)' : 'var(--down)'}">${fmtSigned(totalGainPct)}%</span></div>
+    <div class="stat-sub">總成本 ${fmtPrice(Math.round(totalCost))} · 損益 <span style="color:${gainUp ? 'var(--up)' : 'var(--down)'}">${fmtSigned(Math.round(totalGain), 0)}</span></div>
+  `;
+
   portfolioStatsEl.innerHTML = `
-    <div class="stat-tile">
-      <div class="stat-label">總市值</div>
-      <div class="stat-value mono">${fmtPrice(Math.round(totalValue))}</div>
-    </div>
     <div class="stat-tile">
       <div class="stat-label">總成本</div>
       <div class="stat-value mono">${fmtPrice(Math.round(totalCost))}</div>

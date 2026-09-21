@@ -60,6 +60,8 @@ curl -s "https://kailinstock.zeabur.app/webhook/hot-stocks" | python3 -m json.to
 
 **價格從哪來：** 持股的價格是前端直接呼叫 FinMind 的 `TaiwanStockPrice`（跟股票代號/名稱對照表一樣，是公開端點，不需要金鑰），跟熱門排行的資料來源是分開的兩條路。**注意這是「最近收盤價」，不是即時報價**——FinMind 這個資料集本來就是收盤後才更新，盤中查詢看到的會是前一個交易日的收盤價。
 
+**每日快照怎麼補齊：** 「總資產走勢」圖表的資料點原本只在使用者打開網頁時才會記錄，如果那天沒人開網站就會漏記、走勢圖出現缺口。`持股管理` workflow 現在多了一個 **Schedule Trigger，每天台灣時間下午 3 點自動跑一次**：讀出所有身份代號的持股、抓最新收盤價、幫每個人各自記一筆當天快照，不需要任何人打開網頁。同一個邏輯也開了一個手動測試用的 webhook `GET /webhook/snapshot-all`（不需要帶 profileId，會一次跑完所有人），平常不需要呼叫，除錯時可以用。
+
 ## 部署到 GitHub Pages
 
 Repo 設定 → Pages → Source 選 `main` 分支 `/ (root)`，存檔後幾分鐘內就能透過 `https://<帳號>.github.io/<repo>/` 存取。這是純靜態檔案，不需要任何建置步驟。

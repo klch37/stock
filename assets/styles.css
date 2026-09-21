@@ -204,7 +204,18 @@
     box-shadow:var(--shadow);
   }
   .stat-label{ font-size:12px; color:var(--ink-faint); margin-bottom:6px; }
-  .stat-value{ font-family:"Roboto Mono",monospace; font-size:20px; font-weight:700; }
+  .stat-value{ font-family:"Roboto Mono",monospace; font-size:22px; font-weight:700; }
+  .stat-grid-3{ grid-template-columns:repeat(3,1fr); }
+  @media (max-width:860px){ .stat-grid-3{ grid-template-columns:repeat(2,1fr); } }
+
+  .portfolio-hero{
+    background:var(--surface-1); border:1px solid var(--border); border-radius:14px;
+    padding:20px 22px; margin-bottom:14px; box-shadow:var(--shadow);
+  }
+  .portfolio-hero .stat-label{ margin-bottom:8px; }
+  .hero-value{ font-family:"Roboto Mono",monospace; font-size:38px; font-weight:700; letter-spacing:-0.5px; line-height:1.1; }
+  .hero-value .hero-pct{ font-size:16px; font-weight:700; margin-left:10px; vertical-align:middle; }
+  .portfolio-hero .stat-sub{ margin-top:6px; }
   .stat-sub{ font-size:11.5px; color:var(--ink-muted); margin-top:3px; }
 
   /* ---------- spotlight ---------- */
@@ -343,7 +354,30 @@
   .profile-bar .pf-current strong{ font-family:"Roboto Mono",monospace; color:var(--accent); }
   .profile-bar .pf-switch{
     font-size:12px; color:var(--ink-faint); background:none; border:none; cursor:pointer; text-decoration:underline;
-    padding:0;
+    padding:0; margin-left:4px;
+  }
+  .pf-icon-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px; border-radius:8px; border:1px solid var(--border);
+    background:var(--surface-1); color:var(--ink-muted); cursor:pointer; font-size:13px; padding:0;
+  }
+  .pf-icon-btn:hover{ background:var(--surface-2); color:var(--ink); }
+  .pf-icon-btn.spinning{ animation:pf-spin 0.7s linear infinite; }
+  @keyframes pf-spin{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .pf-icon-btn.spinning{ animation:none; } }
+
+  .amounts-hidden .stat-value,
+  .amounts-hidden .hero-value,
+  .amounts-hidden .portfolio-hero .stat-sub,
+  .amounts-hidden .holding-price,
+  .amounts-hidden .holding-gain .amount,
+  .amounts-hidden .donut-total-value,
+  .amounts-hidden .gl-value,
+  .amounts-hidden .rank-bar-pct,
+  .amounts-hidden .trend-summary strong,
+  .amounts-hidden .hm-label{
+    filter:blur(6px);
+    user-select:none;
   }
   .profile-setup{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .profile-setup p{ font-size:13px; color:var(--ink-muted); margin:0; }
@@ -438,6 +472,17 @@
   .legend-swatch{ width:9px; height:9px; border-radius:2px; flex:none; }
   .legend-name{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink); }
   .legend-value{ font-family:"Roboto Mono",monospace; color:var(--ink-muted); font-size:11.5px; }
+
+  .rank-bar-header{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:11px; color:var(--ink-faint); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.3px;
+  }
+  .rank-bar-header span{ font-family:"Roboto Mono",monospace; color:var(--ink-muted); text-transform:none; letter-spacing:0; }
+  .rank-bar-row{ display:grid; grid-template-columns:64px 1fr 44px; align-items:center; gap:8px; font-size:12px; margin-bottom:7px; cursor:pointer; }
+  .rank-bar-name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink); }
+  .rank-bar-track{ position:relative; height:7px; border-radius:4px; background:var(--surface-2); overflow:hidden; }
+  .rank-bar-fill{ position:absolute; top:0; left:0; bottom:0; border-radius:4px; }
+  .rank-bar-pct{ font-family:"Roboto Mono",monospace; font-size:11.5px; color:var(--ink-muted); text-align:right; }
 
   .gl-chart{ display:flex; flex-direction:column; gap:11px; }
   .gl-row{ display:grid; grid-template-columns:64px 1fr 72px; align-items:center; gap:8px; cursor:pointer; font-size:12px; }
