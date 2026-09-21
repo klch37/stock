@@ -50,11 +50,17 @@
   }
 
   *{box-sizing:border-box;}
+  html{
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+  }
   body{
     margin:0;
     background:var(--surface-0);
     color:var(--ink);
     font-family:"Noto Sans TC","Noto Sans","PingFang TC",sans-serif;
+    font-size:14px;
+    line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3,h4,h5{
