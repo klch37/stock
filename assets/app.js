@@ -703,14 +703,39 @@ function buildTrendChart(history){
   return { html: `<div class="viz">${html}</div>${summary}`, count: n };
 }
 
+let trendRange = 'all'; // week | month | year | all
+
+function filterHistoryByRange(history, range){
+  if (range === 'all' || !history) return history;
+  const now = new Date();
+  let cutoff;
+  if (range === 'week') cutoff = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  else if (range === 'month') cutoff = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  else if (range === 'year') cutoff = new Date(now.getFullYear(), 0, 1);
+  else return history;
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  return history.filter(h => h.date >= cutoffStr);
+}
+
 function renderTrendChart(){
   const trendEl = document.getElementById('chart-trend');
   const hintEl = document.getElementById('chart-trend-hint');
-  const { html, count } = buildTrendChart(currentHistory);
-  trendEl.innerHTML = html;
+  const filtered = filterHistoryByRange(currentHistory, trendRange);
+  const { html, count } = buildTrendChart(filtered);
+  trendEl.innerHTML = (currentHistory.length >= 2 && count < 2)
+    ? '<p class="chart-empty">這個區間內資料不足，試試看切換到「全部」。</p>'
+    : html;
   hintEl.textContent = count ? `已記錄 ${count} 天` : '';
   wireChartTooltips(trendEl);
 }
+
+document.getElementById('trend-range-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-range]');
+  if (!btn) return;
+  trendRange = btn.dataset.range;
+  document.querySelectorAll('#trend-range-tabs button').forEach(b => b.classList.toggle('active', b === btn));
+  renderTrendChart();
+});
 
 async function recordSnapshotIfNeeded(value, cost){
   const profileId = getProfileId();

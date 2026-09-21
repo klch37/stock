@@ -146,7 +146,18 @@
         </div>
 
         <div class="card" style="margin-bottom:18px;">
-          <div class="card-head"><h3>總資產走勢</h3><span class="hint" id="chart-trend-hint"></span></div>
+          <div class="card-head">
+            <h3>總資產走勢</h3>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div class="trend-range-tabs" id="trend-range-tabs">
+                <button type="button" data-range="week">本週</button>
+                <button type="button" data-range="month">本月</button>
+                <button type="button" data-range="year">今年</button>
+                <button type="button" data-range="all" class="active">全部</button>
+              </div>
+              <span class="hint" id="chart-trend-hint"></span>
+            </div>
+          </div>
           <div class="card-body prose chart-card-body" id="chart-trend"></div>
         </div>
 
