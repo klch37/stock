@@ -215,8 +215,9 @@ const STOCK_LIST_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 小時
 
 // 股票代號 <-> 名稱對照表（用來支援輸入名稱查詢），背景載入、不擋畫面。
 let stockListState = 'idle'; // idle | loading | ready | error
-let nameToCode = new Map();  // 名稱 -> 代號（含常見別名比對用的小寫/去空白版本）
-let codeToName = new Map();  // 代號 -> 名稱
+let nameToCode = new Map();     // 名稱 -> 代號（含常見別名比對用的小寫/去空白版本）
+let codeToName = new Map();     // 代號 -> 名稱
+let codeToIndustry = new Map(); // 代號 -> 產業分類（例如台積電 -> 半導體業）
 
 function indexStockList(rows){
   // 同一代號可能因產業分類異動而有多筆紀錄，只保留日期最新的一筆。
@@ -227,14 +228,16 @@ function indexStockList(rows){
     if (!code || !name) continue;
     const prev = latest.get(code);
     if (!prev || String(row.date || '') > String(prev.date || '')){
-      latest.set(code, { code, name, date: row.date });
+      latest.set(code, { code, name, date: row.date, industry: String(row.industry_category || '').trim() });
     }
   }
   nameToCode = new Map();
   codeToName = new Map();
-  for (const { code, name } of latest.values()){
+  codeToIndustry = new Map();
+  for (const { code, name, industry } of latest.values()){
     codeToName.set(code, name);
     nameToCode.set(name, code);
+    if (industry) codeToIndustry.set(code, industry);
   }
 }
 
@@ -282,6 +285,13 @@ function populateSuggestions(){
     .filter(code => codeToName.has(code))
     .map(code => `<option value="${escapeHtml(code)} ${escapeHtml(codeToName.get(code))}">`)
     .join('');
+
+  // 產業分類資料（跟代號/名稱同一份清單）這時候才就緒，如果持股圖表已經畫過，補畫一次產業配置。
+  if (lastComputedRows.length){
+    const indEl = document.getElementById('chart-industry');
+    indEl.innerHTML = buildIndustryChart(lastComputedRows);
+    wireChartTooltips(indEl);
+  }
 }
 
 function resolveStockCode(input){
@@ -379,6 +389,7 @@ const pfHint = document.getElementById('pf-hint');
 
 let currentHoldings = [];
 let currentHistory = [];
+let lastComputedRows = [];
 const priceCache = new Map(); // code -> { price, fetchedAt }
 
 function getProfileId(){
@@ -487,16 +498,17 @@ function polar(cx, cy, radius, angleDeg){
   return [cx + radius * Math.cos(rad), cy + radius * Math.sin(rad)];
 }
 
-function buildAllocationChart(rows){
-  const data = rows.filter(r => r.value !== null && r.value > 0).sort((a, b) => b.value - a.value);
-  if (!data.length) return '<p class="chart-empty">尚無市值資料可顯示。</p>';
+// 共用的甜甜圈圖繪製：傳入已經分好組的 [{name, value}]，超過 MAX_SLICES 自動併成「其他」
+function buildDonut(items, { centerLabel, maxSlices = 6 } = {}){
+  const data = items.filter(x => x.value > 0).sort((a, b) => b.value - a.value);
+  if (!data.length) return null;
 
-  const MAX_SLICES = 6;
-  const slices = data.slice(0, MAX_SLICES).map(r => ({ name: r.name || r.code, value: r.value }));
-  if (data.length > MAX_SLICES){
-    slices.push({ name: '其他', value: data.slice(MAX_SLICES).reduce((s, r) => s + r.value, 0) });
+  const slices = data.slice(0, maxSlices).map(x => ({ name: x.name, value: x.value }));
+  if (data.length > maxSlices){
+    slices.push({ name: '其他', value: data.slice(maxSlices).reduce((s, x) => s + x.value, 0) });
   }
   const total = slices.reduce((s, x) => s + x.value, 0);
+  const isOtherSlice = (s, i) => s.name === '其他' && i === slices.length - 1 && data.length > maxSlices;
 
   const R = 70, r = 44, cx = 80, cy = 80;
   let angle = -90;
@@ -506,8 +518,7 @@ function buildAllocationChart(rows){
     const start = angle;
     const end = angle + sweep;
     angle = end;
-    const isOther = s.name === '其他' && i === slices.length - 1 && data.length > MAX_SLICES;
-    const color = isOther ? null : CHART_PALETTE[i % CHART_PALETTE.length];
+    const color = isOtherSlice(s, i) ? null : CHART_PALETTE[i % CHART_PALETTE.length];
     const large = sweep > 180 ? 1 : 0;
     const [x1, y1] = polar(cx, cy, R, start);
     const [x2, y2] = polar(cx, cy, R, end);
@@ -520,8 +531,7 @@ function buildAllocationChart(rows){
   }).join('');
 
   const legend = slices.map((s, i) => {
-    const isOther = s.name === '其他' && i === slices.length - 1 && data.length > MAX_SLICES;
-    const color = isOther ? 'var(--ink-faint)' : CHART_PALETTE[i % CHART_PALETTE.length];
+    const color = isOtherSlice(s, i) ? 'var(--ink-faint)' : CHART_PALETTE[i % CHART_PALETTE.length];
     const pct = ((s.value / total) * 100).toFixed(1);
     return `<div class="legend-row"><span class="legend-swatch" style="background:${color}"></span><span class="legend-name">${escapeHtml(s.name)}</span><span class="legend-value">${pct}%</span></div>`;
   }).join('');
@@ -531,10 +541,33 @@ function buildAllocationChart(rows){
       <svg viewBox="0 0 160 160" style="width:150px; height:150px; flex:none;">
         ${paths}
         <text x="80" y="76" text-anchor="middle" class="donut-total-value">${fmtCompact(total)}</text>
-        <text x="80" y="92" text-anchor="middle" class="donut-total-label">總市值</text>
+        <text x="80" y="92" text-anchor="middle" class="donut-total-label">${escapeHtml(centerLabel || '')}</text>
       </svg>
       <div class="chart-legend" style="flex:1; min-width:140px;">${legend}</div>
     </div>`;
+}
+
+function buildAllocationChart(rows){
+  const items = rows.filter(r => r.value !== null && r.value > 0)
+    .map(r => ({ name: r.name || r.code, value: r.value }));
+  const html = buildDonut(items, { centerLabel: '總市值' });
+  return html || '<p class="chart-empty">尚無市值資料可顯示。</p>';
+}
+
+function buildIndustryChart(rows){
+  const priced = rows.filter(r => r.value !== null && r.value > 0);
+  if (!priced.length) return '<p class="chart-empty">尚無市值資料可顯示。</p>';
+  if (stockListState !== 'ready'){
+    return '<p class="chart-empty">產業分類資料載入中，請稍候再切換回來看看。</p>';
+  }
+  const byIndustry = new Map();
+  for (const r of priced){
+    const industry = codeToIndustry.get(r.code) || '未分類';
+    byIndustry.set(industry, (byIndustry.get(industry) || 0) + r.value);
+  }
+  const items = [...byIndustry.entries()].map(([name, value]) => ({ name, value }));
+  const html = buildDonut(items, { centerLabel: '總市值', maxSlices: 7 });
+  return html || '<p class="chart-empty">尚無市值資料可顯示。</p>';
 }
 
 function buildGainLossChart(rows){
@@ -562,11 +595,12 @@ function buildGainLossChart(rows){
 function buildTrendChart(history){
   if (!history || history.length < 2){
     const n = history ? history.length : 0;
-    return { html: `<p class="chart-empty">資料還太少（目前 ${n} 筆），每天打開頁面都會自動多記一筆快照，過幾天就會看到趨勢線。</p>`, count: n };
+    return { html: `<p class="chart-empty">資料還太少（目前 ${n} 筆），每天打開頁面都會自動多記一筆快照，過幾天就會看到趨勢線。</p>`, count: n, summary: '' };
   }
   const sorted = [...history].sort((a, b) => a.date.localeCompare(b.date));
   const values = sorted.map(h => h.value);
-  const min = Math.min(...values), max = Math.max(...values);
+  const costs = sorted.map(h => h.cost);
+  const min = Math.min(...values, ...costs), max = Math.max(...values, ...costs);
   const pad = (max - min) * 0.15 || max * 0.05 || 1;
   const yMin = Math.max(min - pad, 0), yMax = max + pad;
   const W = 640, H = 170, padL = 6, padR = 6, padT = 14, padB = 10;
@@ -575,10 +609,18 @@ function buildTrendChart(history){
   const x = i => padL + (n === 1 ? plotW / 2 : (i / (n - 1)) * plotW);
   const y = v => padT + plotH - ((v - yMin) / (yMax - yMin || 1)) * plotH;
 
-  const points = sorted.map((h, i) => [x(i), y(h.value)]);
-  const linePath = points.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
-  const baseY = (padT + plotH).toFixed(1);
-  const areaPath = `${linePath} L ${points[n - 1][0].toFixed(1)} ${baseY} L ${points[0][0].toFixed(1)} ${baseY} Z`;
+  const valuePts = sorted.map((h, i) => [x(i), y(h.value)]);
+  const costPts = sorted.map((h, i) => [x(i), y(h.cost)]);
+  const valueLine = valuePts.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  const costLine = costPts.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+
+  const last = sorted[n - 1];
+  const gainUp = last.value >= last.cost;
+  const gapColor = gainUp ? 'var(--up)' : 'var(--down)';
+
+  // 市值線與成本線之間的區域上色，直接視覺化「賺 / 賠」的缺口
+  const costPtsRev = [...costPts].reverse();
+  const gapPath = `${valueLine} L ${costPtsRev.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L ')} Z`;
 
   const gridLines = [0, 0.5, 1].map(f => {
     const gy = (padT + plotH * f).toFixed(1);
@@ -586,27 +628,43 @@ function buildTrendChart(history){
   }).join('');
 
   const dots = sorted.map((h, i) => {
-    const [px, py] = points[i];
+    const [px, py] = valuePts[i];
     const isLast = i === n - 1;
-    const ttRows = [`總市值 ${fmtPrice(h.value)}`, `成本 ${fmtPrice(h.cost)}`].map(escapeHtml).join('||');
+    const gain = h.value - h.cost;
+    const gainPct = h.cost > 0 ? (gain / h.cost) * 100 : 0;
+    const ttRows = [`總市值 ${fmtPrice(h.value)}`, `成本 ${fmtPrice(h.cost)}`, `損益 ${fmtSigned(Math.round(gain), 0)}（${fmtSigned(gainPct)}%）`].map(escapeHtml).join('||');
     const fillStyle = isLast ? 'fill:var(--accent);' : 'fill:var(--surface-1);';
     return `<circle class="viz-mark" cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${isLast ? 4.5 : 3}" style="${fillStyle}stroke:var(--accent);stroke-width:1.5;" data-tt-title="${escapeHtml(h.date)}" data-tt-rows="${ttRows}"></circle>`;
   }).join('');
 
   const html = `
+    <div class="trend-legend">
+      <span><i style="background:var(--accent);"></i>總市值</span>
+      <span><i style="background:var(--ink-faint); background-image:repeating-linear-gradient(90deg, var(--ink-faint) 0 3px, transparent 3px 6px);"></i>總成本</span>
+    </div>
     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%; height:170px;">
-      <defs>
-        <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" style="stop-color:var(--accent); stop-opacity:0.28"/>
-          <stop offset="100%" style="stop-color:var(--accent); stop-opacity:0"/>
-        </linearGradient>
-      </defs>
       ${gridLines}
-      <path d="${areaPath}" fill="url(#trendFill)" stroke="none"></path>
-      <path d="${linePath}" fill="none" style="stroke:var(--accent);stroke-width:2;"></path>
+      <path d="${gapPath}" fill="${gapColor}" fill-opacity="0.14" stroke="none"></path>
+      <path d="${costLine}" fill="none" style="stroke:var(--ink-faint);stroke-width:1.5;stroke-dasharray:4 3;"></path>
+      <path d="${valueLine}" fill="none" style="stroke:var(--accent);stroke-width:2;"></path>
       ${dots}
     </svg>`;
-  return { html: `<div class="viz">${html}</div>`, count: n };
+
+  // 摘要：區間最高/最低市值、較上一筆的變化
+  const maxVal = Math.max(...values), minVal = Math.min(...values);
+  const prev = sorted[n - 2];
+  const delta = last.value - prev.value;
+  const deltaPct = prev.value > 0 ? (delta / prev.value) * 100 : 0;
+  const deltaColor = delta >= 0 ? 'var(--up)' : 'var(--down)';
+  const summary = `
+    <div class="trend-summary">
+      <span>區間最高 <strong>${fmtPrice(maxVal)}</strong></span>
+      <span>區間最低 <strong>${fmtPrice(minVal)}</strong></span>
+      <span>較上一筆 <strong style="color:${deltaColor}">${fmtSigned(Math.round(delta), 0)}（${fmtSigned(deltaPct)}%）</strong></span>
+      <span>目前 <strong style="color:${gapColor}">${gainUp ? '市值高於成本' : '市值低於成本'}</strong></span>
+    </div>`;
+
+  return { html: `<div class="viz">${html}</div>${summary}`, count: n };
 }
 
 function renderTrendChart(){
@@ -670,11 +728,13 @@ function buildMeterRow(r){
 
 async function renderPortfolio(){
   if (!currentHoldings.length){
+    lastComputedRows = [];
     holdingListEl.innerHTML = '<li class="result-empty" style="padding:16px;">還沒有持股，從左邊表單新增第一筆吧。</li>';
     portfolioStatsEl.innerHTML = '';
     portfolioUpdatedEl.textContent = '';
     document.getElementById('chart-allocation').innerHTML = '<p class="chart-empty">還沒有持股可以分析。</p>';
     document.getElementById('chart-gainloss').innerHTML = '<p class="chart-empty">還沒有持股可以分析。</p>';
+    document.getElementById('chart-industry').innerHTML = '<p class="chart-empty">還沒有持股可以分析。</p>';
     document.getElementById('chart-trend').innerHTML = '<p class="chart-empty">還沒有持股可以分析。</p>';
     document.getElementById('chart-trend-hint').textContent = '';
     return;
@@ -695,6 +755,7 @@ async function renderPortfolio(){
     const gainPct = (gain !== null && cost > 0) ? (gain / cost) * 100 : null;
     return { ...h, price, cost, value, gain, gainPct };
   });
+  lastComputedRows = rows;
 
   portfolioUpdatedEl.textContent = `最近收盤價 · ${fmtTime(new Date())} 更新`;
 
@@ -750,10 +811,13 @@ async function renderPortfolio(){
 
   const allocEl = document.getElementById('chart-allocation');
   const glEl = document.getElementById('chart-gainloss');
+  const indEl = document.getElementById('chart-industry');
   allocEl.innerHTML = buildAllocationChart(rows);
   glEl.innerHTML = buildGainLossChart(rows);
+  indEl.innerHTML = buildIndustryChart(rows);
   wireChartTooltips(allocEl);
   wireChartTooltips(glEl);
+  wireChartTooltips(indEl);
   renderTrendChart();
 
   recordSnapshotIfNeeded(totalValue, totalCost);
