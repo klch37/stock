@@ -64,7 +64,7 @@
   }
   .mono{ font-family:"Roboto Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums; }
   a{ color:inherit; }
-  button{ font:inherit; color:inherit; }
+  button{ font:inherit; color:inherit; appearance:none; -webkit-appearance:none; -moz-appearance:none; background:none; border:none; }
 
   /* ---------- shell ---------- */
   .app{
@@ -252,7 +252,7 @@
   .spotlight-link:hover{ text-decoration:underline; }
 
   /* ---------- report rows (rank list + AI) ---------- */
-  .report-row{ display:grid; grid-template-columns:minmax(280px,400px) 1fr; gap:18px; margin-bottom:20px; align-items:start; }
+  .report-row{ display:grid; grid-template-columns:minmax(320px,480px) 1fr; gap:18px; margin-bottom:20px; align-items:start; }
   .portfolio-row{ grid-template-columns:minmax(280px,340px) minmax(0,1fr); }
   .card{
     background:var(--surface-1);
@@ -281,10 +281,10 @@
   .rank-list{ list-style:none; margin:0; padding:0; }
   .rank-row{
     display:grid;
-    grid-template-columns:26px 1fr 78px 84px 96px;
+    grid-template-columns:22px minmax(80px,1fr) 66px 72px 84px;
     align-items:center;
-    gap:10px;
-    padding:11px 12px;
+    gap:8px;
+    padding:11px 10px;
     border-radius:10px;
   }
   .rank-row:hover{ background:var(--surface-2); }
