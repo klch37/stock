@@ -1,8 +1,12 @@
 // 熱股雷達 — 前端邏輯
-// 資料來源：n8n（kailinstock）的 hot-stocks / stock-analysis webhook
+// 資料來源：n8n（kailinstock）的 hot-stocks（純數字，快）/
+// hot-stocks-ai-stock、hot-stocks-ai-etf（各自呼叫一次 Claude，慢，約 20～30 秒）/
+// stock-analysis webhook。拆成三個端點平行抓，排行榜數字先顯示，AI 分析陸續補上。
 // 若即時抓取失敗（網路問題、n8n 主機異常等），會自動退回 data/snapshot.json 內的快照資料。
 
 const HOT_STOCKS_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks";
+const AI_STOCK_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks-ai-stock";
+const AI_ETF_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks-ai-etf";
 const STOCK_ANALYSIS_ENDPOINT = "https://kailinstock.zeabur.app/webhook/stock-analysis";
 const LOCAL_SNAPSHOT_PATH = "data/snapshot.json";
 
@@ -135,14 +139,18 @@ function renderRanking(){
   renderRankList('list-stocks', SNAPSHOT.hotStocks);
   renderRankList('list-etfs', SNAPSHOT.hotETFs);
 
-  document.getElementById('ai-stocks').innerHTML =
-    mdToHtml(SNAPSHOT.stockAIAnalysis) +
-    '<div class="note">註：此分析由 n8n 內的 Claude 節點產生，來源回應若中途截斷，可能是該節點的輸出長度限制所致。</div>';
+  document.getElementById('ai-stocks').innerHTML = SNAPSHOT.stockAIAnalysis
+    ? mdToHtml(SNAPSHOT.stockAIAnalysis) +
+      '<div class="note">註：此分析由 n8n 內的 Claude 節點產生，來源回應若中途截斷，可能是該節點的輸出長度限制所致。</div>'
+    : '<p class="chart-empty">AI 分析產生中，通常需要 20～30 秒，請稍候…</p>';
 
-  const etfSection = findSection(SNAPSHOT.etfAIAnalysis, '熱門 ETF Top 5') || SNAPSHOT.etfAIAnalysis;
-  document.getElementById('ai-etfs').innerHTML =
-    mdToHtml(etfSection) +
-    '<div class="note">註：ETF 專屬分析同樣可能受來源回應長度限制而不完整。</div>';
+  const etfSection = SNAPSHOT.etfAIAnalysis
+    ? (findSection(SNAPSHOT.etfAIAnalysis, '熱門 ETF Top 5') || SNAPSHOT.etfAIAnalysis)
+    : null;
+  document.getElementById('ai-etfs').innerHTML = etfSection
+    ? mdToHtml(etfSection) +
+      '<div class="note">註：ETF 專屬分析同樣可能受來源回應長度限制而不完整。</div>'
+    : '<p class="chart-empty">AI 分析產生中，通常需要 20～30 秒，請稍候…</p>';
 }
 
 function renderAll(){
@@ -177,15 +185,39 @@ async function loadLiveSnapshot(){
   return res.json();
 }
 
+async function loadAIField(url, field){
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data[field]){
+      SNAPSHOT = { ...SNAPSHOT, [field]: data[field] };
+      renderOverview();
+      renderRanking();
+    }
+  } catch (err){
+    console.warn(`[熱股雷達] ${field} 讀取失敗：`, err);
+  }
+}
+
 async function refreshLive(){
   try {
-    SNAPSHOT = await loadLiveSnapshot();
+    // 數字資料（排行榜）本身很快（約 4～5 秒），AI 分析背後要排隊呼叫 Claude
+    // 可能要 20～30 秒，所以拆成三個獨立 webhook，先讓排行榜立刻顯示，
+    // AI 分析文字各自在背景抓，抓到才補上，不讓使用者整頁空等。
+    // 這個端點不含 AI 分析欄位，先保留舊快照的 AI 文字，避免畫面從「有內容」
+    // 閃回「載入中」，等新的 AI 分析抓到後才會覆蓋。
+    const liveData = await loadLiveSnapshot();
+    SNAPSHOT = { ...SNAPSHOT, ...liveData };
     renderAll();
     setLiveStatus('live');
   } catch (err){
-    console.warn('[熱股雷達] 即時資料抓取失敗（可能是 n8n 尚未開放 CORS），沿用快照資料：', err);
+    console.warn('[熱股雷達] 即時資料抓取失敗，沿用快照資料：', err);
     setLiveStatus('fallback');
+    return;
   }
+  loadAIField(AI_STOCK_ENDPOINT, 'stockAIAnalysis');
+  loadAIField(AI_ETF_ENDPOINT, 'etfAIAnalysis');
 }
 
 async function init(){
