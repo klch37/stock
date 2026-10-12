@@ -48,7 +48,16 @@ curl -s "https://kailinstock.zeabur.app/webhook/hot-stocks" | python3 -m json.to
 
 「個股分析」分頁會即時呼叫 `stock-analysis` webhook（`POST /webhook/stock-analysis?stockCode=xxxx`）。這個 webhook 回傳的是**純文字 Markdown 報告**，不是 JSON，前端用 `res.text()` 直接讀取後用內建的簡易 markdown 轉換器渲染成報告卡片。
 
-（開發紀錄：這個 webhook 一度回 404，是 n8n 端「顯示 active 但 webhook 沒真的註冊」的問題，重新停用/啟用該 workflow 後排除；AI 分析文字被截斷則是三個 Claude 節點都用了 n8n 預設的 `maxTokens`（1024），已全部調高到 4096。）
+（開發紀錄：這個 webhook 一度回 404，是 n8n 端「顯示 active 但 webhook 沒真的註冊」的問題，重新停用/啟用該 workflow 後排除；AI 分析文字被截斷則是三個 Claude 節點都用了 n8n 預設的 `maxTokens`（1024），後來一路調高到 8192。）
+
+**技術面計算（日線＋週線）**：`技術分析` 這個 Code node 會用 FinMind 抓回的歷史股價，在 n8n 端用確定性的程式邏輯算出：
+- 日線 MA5/20/60、RSI(14)、MACD(12,26,9)、ATR(14)
+- 週線（日線自動彙整）MA4/12、RSI(14)
+- 支撐／壓力：近 90 日的 pivot 轉折高低點 + 近 20 日高低點當輔助
+- 規則式「買進／持有／賣出」訊號（日線、週線各一組），邏輯公開在程式碼裡，不是 AI 現場判斷
+- 依近 14 日 ATR 換算的 1 日／5 日參考波動區間
+
+Claude 的 prompt 被要求**只能引用這些已經算好的數字來解釋，不能自己編造任何價格或百分比**——避免「AI 幻想出精確但假的進出場價格」這種對實際交易很危險的情況。日線與週線訊號若方向不一致（例如日線過熱建議觀望、但週線趨勢仍穩），AI 會明確點出這個落差代表什麼。
 
 ## 持股功能
 
