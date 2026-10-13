@@ -33,21 +33,57 @@ function inline(s){
 function mdToHtml(md){
   if (!md) return '';
   const lines = md.split('\n');
-  let html = '', inList = false;
-  const closeList = () => { if (inList){ html += '</ul>'; inList = false; } };
+  let html = '';
+  // 清單堆疊：支援巢狀清單（例如「1. 新聞標題」底下縮排的「- 性質：...」
+  // 「- 短期影響：...」），子清單正確巢狀在上一層 <li> 裡面，而不是攤平成同一層。
+  const stack = []; // { indent, liOpen }
+
+  function closeLi(){
+    if (stack.length && stack[stack.length - 1].liOpen){
+      html += '</li>';
+      stack[stack.length - 1].liOpen = false;
+    }
+  }
+  function popLevel(){
+    closeLi();
+    html += '</ul>';
+    stack.pop();
+  }
+  function closeAll(){
+    while (stack.length) popLevel();
+  }
+
   for (let raw of lines){
+    if (!raw.trim()){ closeAll(); continue; }
+    const indentMatch = raw.match(/^[ \t]*/);
+    const indent = indentMatch ? indentMatch[0].replace(/\t/g, '  ').length : 0;
     const line = raw.trim();
-    if (!line){ closeList(); continue; }
-    if (line.startsWith('### ')){ closeList(); html += `<h5 class="md-h3">${inline(line.slice(4))}</h5>`; continue; }
-    if (line.startsWith('## ')){ closeList(); html += `<h4 class="md-h2">${inline(line.slice(3))}</h4>`; continue; }
-    if (line.startsWith('# ')){ closeList(); html += `<h3 class="md-h1">${inline(line.slice(2))}</h3>`; continue; }
-    if (line === '---'){ closeList(); html += '<hr class="md-hr">'; continue; }
-    if (line.startsWith('- ')){ if (!inList){ html += '<ul class="md-list">'; inList = true; } html += `<li>${inline(line.slice(2))}</li>`; continue; }
-    if (/^\d+\.\s/.test(line)){ if (!inList){ html += '<ul class="md-list">'; inList = true; } html += `<li>${inline(line.replace(/^\d+\.\s/, ''))}</li>`; continue; }
-    closeList();
+
+    if (line.startsWith('### ')){ closeAll(); html += `<h5 class="md-h3">${inline(line.slice(4))}</h5>`; continue; }
+    if (line.startsWith('## ')){ closeAll(); html += `<h4 class="md-h2">${inline(line.slice(3))}</h4>`; continue; }
+    if (line.startsWith('# ')){ closeAll(); html += `<h3 class="md-h1">${inline(line.slice(2))}</h3>`; continue; }
+    if (line === '---'){ closeAll(); html += '<hr class="md-hr">'; continue; }
+
+    const isBullet = line.startsWith('- ');
+    const isNumbered = /^\d+\.\s/.test(line);
+    if (isBullet || isNumbered){
+      const content = isBullet ? line.slice(2) : line.replace(/^\d+\.\s/, '');
+      while (stack.length && stack[stack.length - 1].indent > indent) popLevel();
+      if (stack.length && stack[stack.length - 1].indent === indent){
+        closeLi();
+      } else {
+        html += '<ul class="md-list">';
+        stack.push({ indent, liOpen: false });
+      }
+      html += `<li>${inline(content)}`;
+      stack[stack.length - 1].liOpen = true;
+      continue;
+    }
+
+    closeAll();
     html += `<p>${inline(line)}</p>`;
   }
-  closeList();
+  closeAll();
   return html;
 }
 
@@ -358,7 +394,7 @@ async function queryStock(code, name){
   searchBtn.disabled = true;
   statusText.textContent = `查詢中…（${name ? name + ' ' : ''}${code}）`;
   connDot.className = 'conn-dot';
-  resultArea.innerHTML = '<p class="result-empty">查詢中，請稍候（技術面／營收／法人／新聞都要抓，約需 10～20 秒）…</p>';
+  resultArea.innerHTML = '<p class="result-empty">查詢中，請稍候（日線＋週線技術面／營收／法人／新聞都要抓並交給 AI 分析，約需 40～80 秒）…</p>';
 
   try {
     const res = await fetch(`${STOCK_ANALYSIS_ENDPOINT}?stockCode=${encodeURIComponent(code)}`, { method: 'POST' });
