@@ -12,7 +12,7 @@ const LOCAL_SNAPSHOT_PATH = "data/snapshot.json";
 
 // 內建保底快照：即使 data/snapshot.json 也抓不到（例如直接雙擊開啟 index.html，
 // 瀏覽器會擋掉 file:// 底下的 fetch），頁面仍能顯示這份資料，不會開天窗。
-const BUNDLED_FALLBACK_SNAPSHOT = {"tradingDates": ["20260921", "20260918", "20260917"], "baseDate": "20260916", "marketDate": "20260921", "marketStockCount": 1121, "marketETFCount": 234, "hotStocks": [{"code": "2330", "name": "台積電", "price": 2480, "changePct": 4.2, "tradeVolume": 75096172, "tradeValue": 184100029769, "hotScore": 67.52}, {"code": "2303", "name": "聯電", "price": 157, "changePct": 10.56, "tradeVolume": 722205123, "tradeValue": 110348130166, "hotScore": 62.68}, {"code": "2454", "name": "聯發科", "price": 5010, "changePct": 10.6, "tradeVolume": 28098102, "tradeValue": 133795732795, "hotScore": 59.06}, {"code": "2409", "name": "友達", "price": 33.35, "changePct": 13.44, "tradeVolume": 1540594477, "tradeValue": 48558558861, "hotScore": 55.83}, {"code": "2308", "name": "台達電", "price": 1875, "changePct": 9.65, "tradeVolume": 42949700, "tradeValue": 76222827980, "hotScore": 40.01}], "hotETFs": [{"code": "00631L", "name": "元大台灣50正2", "price": 38.45, "changePct": 8.13, "tradeVolume": 598227478, "tradeValue": 22407009432, "hotScore": 76.46}, {"code": "0050", "name": "元大台灣50", "price": 111.35, "changePct": 4.16, "tradeVolume": 256257901, "tradeValue": 28193753632, "hotScore": 73.34}, {"code": "00918", "name": "大華優利高填息30", "price": 34.19, "changePct": -4.18, "tradeVolume": 504518608, "tradeValue": 17634766380, "hotScore": 57.78}, {"code": "00685L", "name": "群益臺灣加權正2", "price": 12.71, "changePct": 8.35, "tradeVolume": 763244169, "tradeValue": 9417457102, "hotScore": 53.72}, {"code": "00981A", "name": "主動統一台股增長", "price": 29.57, "changePct": 4.38, "tradeVolume": 488018403, "tradeValue": 14107260052, "hotScore": 50.12}], "stockAIAnalysis": "# 🔥 熱門股票 Top 5 分析\n\n## 1. 台積電（2330）\n- 最新股價：2,480元\n- 近3日漲跌幅：+4.2%\n- 近3日累計成交金額：約1,841億元\n- 熱度分數：67.52\n- 市場熱度分析：以近3日累計成交金額而言，台積電居五檔之冠，顯示資金高度集中於此檔權值股，儘管漲幅相對溫和，但成交量能與資金流入規模龐大，反映法人與市場資金對其關注度極高，帶動整體熱度分數位居第一。\n\n## 2. 聯電（2303）\n- 最新股價：157元\n- 近3日漲跌幅：+10.56%\n- 近3日累計成交金額：約1,103億元\n- 熱度分數：62.68\n- 市場熱度分析：聯電近3日成交量高達7.2億股，為五檔中量能最大者，顯示散戶與短線資金積極參與，加上漲幅超過一成，價量齊揚態勢明顯，市場交易熱絡程度極高。\n\n## 3. 聯發科（2454）\n- 最新股價：5,010元\n- 近3日漲跌幅：+10.6%\n- 近3日累計成交金額：約1,338億元\n- 熱度分數：59.06\n- 市場熱度分析：聯發科股價維持在高單位數千元區間，漲幅逾一成且成交金額緊追台積電，顯示雖然成交量不算最大，但因股價基期高，帶動成交金額龐大，反映資金對其市場關注度持續升溫。\n\n## 4. 友達（2409）\n- 最新股價：33.35元\n- 近3日漲跌幅：+13.44%\n- 近3日累計成交金額：約486億元\n- 熱度分數：55.83\n- 市場熱度分析：友達為五檔中漲幅最高者，且成交量高達15.4億股，屬於低價股中資金活躍度極高的標的，顯示短線投機性買盤積極介入，價量表現相當強勢。\n\n## 5. 台達電（2308）\n- 最新股價：1,875元\n- 近3日漲跌幅：+9.65%\n- 近3日累計成交金額：約762億元\n- 熱度分數：40.01\n- 市場熱度分析：台達電漲幅接近一成，成交金額也有一定規模，但整體熱度分數相對五檔中最低，顯示市場關注度雖存在，但資金追捧程度不如其他四檔積極。\n\n## 📌 股票市場觀察\n- 五檔股票近3日皆呈現上漲格局，漲幅介於4.2%至13.44%之間，顯示市場資金明顯偏多操作。\n- 台積電雖漲幅最小，但成交金額最高，顯示資金仍以權值股為主要佈局重心。\n- 聯電與友達成交量能極為龐大（分別逾7億股與15億股），顯示中低價股受到散戶與短線資金高度追捧。\n- 聯發科與台達電屬於高價股，雖成交量不若聯電、友達龐大，但憑藉股價基期高，帶動成交金額同樣可觀。\n- 整體而言，五檔股票呈現「價量齊揚」態勢，反映近期台股市場交投氣氛熱絡，資金集中於權值股與高成交動能標的。", "etfAIAnalysis": "# 🔥 近3日台股熱門排行\n\n## 📈 熱門股票 Top 5\n\n**1. 台積電（2330）**\n- 最新股價：2,480 元\n- 近3日漲跌幅：+4.2%\n- 近3日累計成交金額：約1,841億元\n- 熱度分數：67.52\n- 熱度特色：成交金額居冠，資金最集中的權值股，漲勢穩健帶動大盤關注。\n\n**2. 聯電（2303）**\n- 最新股價：157 元\n- 近3日漲跌幅：+10.56%\n- 近3日累計成交金額：約1,103億元\n- 熱度分數：62.68\n- 熱度特色：成交量高達7.2億張為五檔之冠，漲幅雙位數，散戶交投最活躍。\n\n**3. 聯發科（2454）**\n- 最新股價：5,010 元\n- 近3日漲跌幅：+10.6%\n- 近3日累計成交金額：約1,338億元\n- 熱度分數：59.06\n- 熱度特色：高價股中漲幅與成交金額雙高，資金積極追捧。\n\n**4. 友達（2409）**\n- 最新股價：33.35 元\n- 近3日漲跌幅：+13.44%\n- 近3日累計成交金額：約486億元\n- 熱度分數：55.83\n- 熱度特色：五檔中漲幅最大，且成交量高達15億張，籌碼十分活躍。\n\n**5. 台達電（2308）**\n- 最新股價：1,875 元\n- 近3日漲跌幅：+9.65%\n- 近3日累計成交金額：約762億元\n- 熱度分數：40.01\n- 熱度特色：漲幅接近10%，成交金額穩定，屬於中等熱度族群。\n\n---\n\n## 📊 熱門 ETF Top 5\n\n**1. 元大台灣50正2（00631L）**\n- 最新價格：38.45 元\n- 近3日漲跌幅：+8.13%\n- 近3日累計成交金額：約224億元\n- 熱度分數：76.46\n- 熱度特色：五檔ETF中熱度最高，槍桿式正2型商品吸引大量資金與交易。\n\n**2. 元大台灣50（0050）**\n- 最新價格：111.35 元\n- 近3日漲跌幅：+4.16%\n- 近3日累計成交金額：約282億元\n- 熱度分數：73.34\n- 熱度特色：成交金額最高，市值型龍頭ETF資金穩定進駐。\n\n**3. 大華優利高填息30（00918）**\n- 最新價格：34.19 元\n- 近3日漲跌幅：-4.18%\n- 近3日累計成交金額：約176億元\n- 熱度分數：57.78\n- 熱度特色：唯一下跌標的，但成交量高達5億張，賣壓與交投同步熱絡。\n\n**4. 群益臺灣加權正2（00685L）**\n- 最新價格：12.71 元\n- 近3日漲跌幅：+8.35%\n- 近3日累計成交金額：約94億元\n- 熱度分數：53.72\n- 熱度特色：成交量高達7.6億張，屬低價槓桿商品吸引短線資金。\n\n**5. 主動統一台股增長（00981A）**\n- 最新價格：29.57 元\n- 近3日漲跌幅：+4.38%\n- 近3日累計成交金額：約141億元\n- 熱度分數：50.12\n- 熱度特色：主動式ETF熱度中等，成交量與金額表現平穩。\n\n---\n\n## 🔎 市場觀察\n\n- **資金集中方向**：個股資金明顯集中在台積電、聯發科、聯電三大權值股／科技股，三者近3日合計成交金額超過4,280億元，是市場焦點所在。\n- **上漲吸金為主**：熱門股票Top 5全數上漲，漲幅普遍在4%～13%之間，顯示這波熱度主要來自「股價上漲吸引資金追價」，而非下跌抄底的交投。\n- **ETF資金型態**：熱門ETF資金主要集中在**市值型與槓桿型（0050、00631L、00685L）**，顯示市場對台股大盤走勢偏向樂觀，槓桿工具（正2）需求明顯。\n- **股票 vs ETF 熱度**：個股Top 5合計成交金額約5,530億元，遠高於ETF Top 5合計約917億元，顯示本期**個股交易熱度明顯強於ETF**。\n- **需留意標的**：**00918（大華優利高填息30）**是唯一逆勢下跌的標的（-4.18%），但成交量與金額仍相當可觀（5億張、176億元），屬於「成交熱絡但股價走弱」的觀察對象。\n\n---\n\n## 🎯 今日重點\n\n1. 台積電、聯發科、聯電為近3日資金最集中的三大個股，合計成交金額逾4,000億元，是市場關注核心。\n2. 熱門股票全數上漲，顯示這波熱度屬於「多頭追價型」，而非恐慌性下跌交易。\n3. 正2槓桿型ETF（00631L、00685L）熱度高、漲幅同步走揚，反映市場做多氣氛濃厚。\n4. 00918逆勢下跌但成交量仍大，是本期唯一「量大價跌」需留意的ETF標的。\n5. 整體而言，個股交易熱度明顯高於ETF，資金主要流向科技權值股與相關指數型商品。\n\n---\n*以上資訊僅為近3日市場數據整理，供研究參考，不構成任何買賣建議。*"};
+const BUNDLED_FALLBACK_SNAPSHOT = {"tradingDates": ["20261102", "20261030", "20261029"], "baseDate": "20261028", "marketDate": "20261102", "marketStockCount": 1129, "marketETFCount": 236, "hotStocks": [{"code": "2330", "name": "台積電", "price": 2330, "changePct": -3.92, "tradeVolume": 96184915, "tradeValue": 227100619841, "hotScore": 68.88}, {"code": "2303", "name": "聯電", "price": 110, "changePct": -14.06, "tradeVolume": 719898298, "tradeValue": 81406161041, "hotScore": 58.96}, {"code": "2409", "name": "友達", "price": 30.75, "changePct": -13.5, "tradeVolume": 801587135, "tradeValue": 25753469087, "hotScore": 46.8}, {"code": "2454", "name": "聯發科", "price": 3970, "changePct": -6.26, "tradeVolume": 32376492, "tradeValue": 128479742345, "hotScore": 44.34}, {"code": "2308", "name": "台達電", "price": 1355, "changePct": -12.58, "tradeVolume": 62837312, "tradeValue": 86014574776, "hotScore": 39.68}], "hotETFs": [{"code": "0050", "name": "元大台灣50", "price": 104.1, "changePct": -4.19, "tradeVolume": 474846631, "tradeValue": 49753100082, "hotScore": 70.11}, {"code": "00406A", "name": "主動中信台灣收益", "price": 8.58, "changePct": -6.54, "tradeVolume": 3106228921, "tradeValue": 26916878637, "hotScore": 67.27}, {"code": "00631L", "name": "元大台灣50正2", "price": 33.83, "changePct": -8.27, "tradeVolume": 785143616, "tradeValue": 27004621454, "hotScore": 51.29}, {"code": "00685L", "name": "群益臺灣加權正2", "price": 11.17, "changePct": -8.52, "tradeVolume": 1206989162, "tradeValue": 13668348294, "hotScore": 38.98}, {"code": "00981A", "name": "主動統一台股增長", "price": 26.57, "changePct": -7.26, "tradeVolume": 677452216, "tradeValue": 18179434704, "hotScore": 38.27}], "stockAIAnalysis": "# 🔥 熱門股票 Top 5 分析\n\n## 1. 台積電（2330）\n- 最新股價：2330 元\n- 近3日漲跌幅：-3.92%\n- 近3日累計成交金額：約2,271.01億元\n- 熱度分數：68.88\n- 市場熱度分析：台積電以最高熱度分數穩居榜首，雖然累積跌幅相對其他個股較為溫和，但成交金額遠超其餘四檔，顯示市場資金高度關注，交投動能強勁，為台股權值指標股之一，市場波動對大盤影響顯著。\n\n## 2. 聯電（2303）\n- 最新股價：110 元\n- 近3日漲跌幅：-14.06%\n- 近3日累計成交金額：約814.06億元\n- 熱度分數：58.96\n- 市場熱度分析：聯電近3日跌幅在五檔中最為劇烈，且成交量高達7.2億股，顯示市場短線交易相當活躍，籌碼鬆動明顯，呈現高波動、高周轉的熱門股特徵。\n\n## 3. 友達（2409）\n- 最新股價：30.75 元\n- 近3日漲跌幅：-13.5%\n- 近3日累計成交金額：約257.53億元\n- 熱度分數：46.8\n- 市場熱度分析：友達雖然股價基期較低，但成交量達8億股以上，為五檔中成交量最大者，顯示散戶與短線資金熱絡參與，股價跌幅亦相對明顯，呈現高度投機性交易特徵。\n\n## 4. 聯發科（2454）\n- 最新股價：3970 元\n- 近3日漲跌幅：-6.26%\n- 近3日累計成交金額：約1,284.80億元\n- 熱度分數：44.34\n- 市場熱度分析：聯發科股價位階高，雖然成交量相對較低，但成交金額仍居五檔第二，顯示該股以大額資金交易為主，跌幅相對台積電略深，反映市場對半導體設計類股的關注度仍高。\n\n## 5. 台達電（2308）\n- 最新股價：1355 元\n- 近3日漲跌幅：-12.58%\n- 近3日累計成交金額：約860.15億元\n- 熱度分數：39.68\n- 市場熱度分析：台達電近3日跌幅居五檔中第二深，熱度分數則為五檔最低，顯示市場對其關注度相對較弱，但仍維持一定的成交規模，顯示法人與中實戶持續留意其股價表現。\n\n## 📌 股票市場觀察\n- 五檔熱門股近3日均呈現下跌走勢，顯示近期台股整體氣氛偏空，電子權值股普遍承壓。\n- 台積電與聯發科雖跌幅相對較小，但成交金額龐大，顯示資金仍集中於權值科技股。\n- 聯電、友達、台達電跌幅皆超過12%，顯示中小型權值股或面板、被動元件類股波動劇烈，短線賣壓沉重。\n- 友達與聯電成交量龐大，反映市場投機性資金活躍，籌碼周轉率高。\n- 整體而言，熱門股排行呈現「高跌幅、高成交量」特徵，顯示市場短期波動加劇，投資人需留意風險控管。", "etfAIAnalysis": "# 🔥 近3日台股熱門排行\n\n## 📈 熱門股票 Top 5\n\n1. **台積電（2330）**\n   - 最新股價：2330 元\n   - 近3日漲跌幅：-3.92%\n   - 近3日累計成交金額：約 2,271 億元\n   - 熱度分數：68.88\n   - 市場熱度特色：成交金額居冠，跌幅相對較小，資金仍大量聚焦於權值龍頭股。\n\n2. **聯電（2303）**\n   - 最新股價：110 元\n   - 近3日漲跌幅：-14.06%\n   - 近3日累計成交金額：約 814 億元\n   - 熱度分數：58.96\n   - 市場熱度特色：跌幅最深、成交量最大，呈現「重挫但交易極度熱絡」現象。\n\n3. **友達（2409）**\n   - 最新股價：30.75 元\n   - 近3日漲跌幅：-13.5%\n   - 近3日累計成交金額：約 258 億元\n   - 熱度分數：46.8\n   - 市場熱度特色：成交量居所有熱門股之冠，但跌幅明顯，顯示籌碼大量換手。\n\n4. **聯發科（2454）**\n   - 最新股價：3970 元\n   - 近3日漲跌幅：-6.26%\n   - 近3日累計成交金額：約 1,285 億元\n   - 熱度分數：44.34\n   - 市場熱度特色：成交金額排名第二，跌幅中等，仍為資金高度關注的權值科技股。\n\n5. **台達電（2308）**\n   - 最新股價：1355 元\n   - 近3日漲跌幅：-12.58%\n   - 近3日累計成交金額：約 860 億元\n   - 熱度分數：39.68\n   - 市場熱度特色：跌幅較大，成交金額仍維持高檔，顯示賣壓與承接皆活躍。\n\n---\n\n## 📊 熱門 ETF Top 5\n\n1. **元大台灣50（0050）**\n   - 最新價格：104.1 元\n   - 近3日漲跌幅：-4.19%\n   - 近3日累計成交金額：約 498 億元\n   - 熱度分數：70.11\n   - 市場關注特色：熱度分數最高，為大型權值ETF中資金最集中標的。\n\n2. **主動中信台灣收益（00406A）**\n   - 最新價格：8.58 元\n   - 近3日漲跌幅：-6.54%\n   - 近3日累計成交金額：約 269 億元\n   - 熱度分數：67.27\n   - 市場關注特色：成交量高達31億股以上，顯示低價ETF吸引大量交易熱度。\n\n3. **元大台灣50正2（00631L）**\n   - 最新價格：33.83 元\n   - 近3日漲跌幅：-8.27%\n   - 近3日累計成交金額：約 270 億元\n   - 熱度分數：51.29\n   - 市場關注特色：槓桿型ETF跌幅放大，交易活躍度高，反映市場波動加劇。\n\n4. **群益臺灣加權正2（00685L）**\n   - 最新價格：11.17 元\n   - 近3日漲跌幅：-8.52%\n   - 近3日累計成交金額：約 137 億元\n   - 熱度分數：38.98\n   - 市場關注特色：跌幅居ETF之冠，槓桿效應明顯放大市場下跌幅度。\n\n5. **主動統一台股增長（00981A）**\n   - 最新價格：26.57 元\n   - 近3日漲跌幅：-7.26%\n   - 近3日累計成交金額：約 182 億元\n   - 熱度分數：38.27\n   - 市場關注特色：主動式ETF同樣下跌，顯示整體台股ETF市場氣氛偏弱。\n\n---\n\n## 🔎 市場觀察\n\n- **資金集中標的**：資金主要集中在台積電、聯發科等權值科技股，以及0050、00406A等大型ETF，顯示市場焦點仍圍繞在半導體與大型權值股。\n- **上漲 vs 下跌熱絡**：本期所有熱門股票與ETF皆為下跌，顯示近3日市場屬於「下跌但交易熱絡」型態，並非資金追價上漲，而是賣壓或換手量能放大。\n- **ETF資金類型**：資金集中在大型市值型ETF（0050）、主動式ETF（00406A、00981A）以及槓桿型ETF（00631L、00685L），顯示投資人同時關注追蹤大盤與槓桿操作工具。\n- **股票 vs ETF熱度比較**：股票端成交金額規模（尤其台積電、聯發科）明顯高於ETF，顯示個股交易熱度略勝一籌，但ETF熱度分數（0050、00406A）亦相當接近，顯示兩邊關注度皆高。\n- **成交熱但股價重挫標的**：聯電（-14.06%）、友達（-13.5%）、台達電（-12.58%）皆出現「成交量/金額龐大但股價重挫」情況，尤其聯電與友達的成交量皆超過7億股以上，值得留意市場籌碼大幅換手的情形。\n\n---\n\n## 🎯 今日重點\n\n1. 近3日台股熱門股票與ETF全數下跌，市場呈現普遍性的賣壓格局。\n2. 台積電與聯發科雖下跌，但成交金額仍居冠亞軍，顯示資金並未離開權值科技股，而是高度換手。\n3. 聯電、友達成交量異常龐大，且跌幅居前，顯示中小型科技股籌碼劇烈變動，需留意後續股價走勢。\n4. 槓桿型ETF（00631L、00685L）跌幅皆超過8%，反映槓桿操作在盤勢下跌時風險被放大。\n5. 整體而言，近3日資金熱度集中在「科技權值股＋大型／槓桿ETF」，但方向偏向下跌整理，顯示市場氣氛轉為謹慎。\n\n---\n以上僅根據提供數據整理，僅供市場研究參考，不構成任何投資建議。"};
 
 let SNAPSHOT = BUNDLED_FALLBACK_SNAPSHOT;
 
@@ -24,6 +24,26 @@ const fmtDate = d => `${d.slice(0,4)}/${d.slice(4,6)}/${d.slice(6,8)}`;
 const fmtTime = d => d.toLocaleTimeString('zh-Hant-TW', { hour: '2-digit', minute: '2-digit' });
 
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// 所有對外請求都經過這個包裝：瀏覽器的 fetch 本身沒有逾時機制，若 n8n／FinMind
+// 卡住，畫面會永遠停在「載入中」。統一在這裡用 AbortController 設逾時，逾時後
+// 拋出 err.name === 'TimeoutError'，呼叫端可以依此顯示「逾時」而不是泛用錯誤。
+async function fetchWithTimeout(url, options = {}, timeoutMs = 20000){
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } catch (err){
+    if (err.name === 'AbortError'){
+      const timeoutErr = new Error(`請求逾時（超過 ${Math.round(timeoutMs / 1000)} 秒）`);
+      timeoutErr.name = 'TimeoutError';
+      throw timeoutErr;
+    }
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
+}
 function inline(s){
   return escapeHtml(s)
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
@@ -210,20 +230,22 @@ function setLiveStatus(state){
 
 // ---------- data loading ----------
 async function loadLocalSnapshot(){
-  const res = await fetch(LOCAL_SNAPSHOT_PATH, { cache: 'no-store' });
+  const res = await fetchWithTimeout(LOCAL_SNAPSHOT_PATH, { cache: 'no-store' }, 10000);
   if (!res.ok) throw new Error('local snapshot HTTP ' + res.status);
   return res.json();
 }
 
 async function loadLiveSnapshot(){
-  const res = await fetch(HOT_STOCKS_ENDPOINT, { cache: 'no-store' });
+  // hot-stocks 本身只回數字資料，通常 4～5 秒，20 秒還沒回應代表 n8n 或網路異常
+  const res = await fetchWithTimeout(HOT_STOCKS_ENDPOINT, { cache: 'no-store' }, 20000);
   if (!res.ok) throw new Error('live fetch HTTP ' + res.status);
   return res.json();
 }
 
 async function loadAIField(url, field){
   try {
-    const res = await fetch(url, { cache: 'no-store' });
+    // AI 分析端點背後要排隊呼叫 Claude，正常約 20～30 秒，60 秒逾時留了充分餘裕
+    const res = await fetchWithTimeout(url, { cache: 'no-store' }, 60000);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     if (data[field]){
@@ -327,7 +349,8 @@ async function loadStockList(){
   }
 
   try {
-    const res = await fetch(STOCK_LIST_ENDPOINT, { cache: 'no-store' });
+    // 全市場股票清單約 600KB，網路慢時可能要久一點，給 30 秒
+    const res = await fetchWithTimeout(STOCK_LIST_ENDPOINT, { cache: 'no-store' }, 30000);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     const rows = data.data || [];
@@ -397,7 +420,8 @@ async function queryStock(code, name){
   resultArea.innerHTML = '<p class="result-empty">查詢中，請稍候（日線＋週線技術面／營收／法人／新聞都要抓並交給 AI 分析，約需 40～80 秒）…</p>';
 
   try {
-    const res = await fetch(`${STOCK_ANALYSIS_ENDPOINT}?stockCode=${encodeURIComponent(code)}`, { method: 'POST' });
+    // 報告正常約需 40～80 秒，120 秒逾時留了充分餘裕才判定為卡住
+    const res = await fetchWithTimeout(`${STOCK_ANALYSIS_ENDPOINT}?stockCode=${encodeURIComponent(code)}`, { method: 'POST' }, 120000);
     const text = await res.text();
     if (!res.ok){
       throw { kind: 'http', status: res.status, body: text };
@@ -410,7 +434,10 @@ async function queryStock(code, name){
     connDot.className = 'conn-dot err';
     let title = '查詢失敗';
     let detail = '發生未預期的錯誤，請稍後再試。';
-    if (err && err.kind === 'http' && err.status === 404){
+    if (err && err.name === 'TimeoutError'){
+      title = '查詢逾時';
+      detail = '已等待超過 2 分鐘仍未收到回應，n8n 可能忙碌或卡住了。請稍後再試一次。';
+    } else if (err && err.kind === 'http' && err.status === 404){
       title = 'workflow 尚未啟用（404）';
       detail = 'n8n 的 stock-analysis webhook 目前沒有註冊 production URL。請到 n8n 編輯畫面重新啟用 / 儲存這個 workflow 後再試一次。';
     } else if (err && err.kind === 'http'){
@@ -421,7 +448,9 @@ async function queryStock(code, name){
       detail = '請檢查網路連線，或稍後再試一次。';
     }
     statusText.textContent = title;
-    resultArea.innerHTML = `<div class="result-error"><strong>${escapeHtml(title)}</strong>${escapeHtml(detail)}</div>`;
+    resultArea.innerHTML = `<div class="result-error"><strong>${escapeHtml(title)}</strong>${escapeHtml(detail)}</div><button class="holding-action" id="search-retry-btn" style="margin-top:10px; border:1px solid var(--border); border-radius:8px; padding:6px 14px; font-size:12.5px;" type="button">重試</button>`;
+    const retryBtn = document.getElementById('search-retry-btn');
+    if (retryBtn) retryBtn.addEventListener('click', () => queryStock(code, name));
   } finally {
     searchBtn.disabled = false;
   }
@@ -506,8 +535,8 @@ function renderProfileBar(){
     profileBar.innerHTML = `
       <div class="pf-current">
         身份：<strong>${escapeHtml(profileId)}</strong>
-        <button class="pf-icon-btn" id="pf-refresh" type="button" title="重新整理現價">⟳</button>
-        <button class="pf-icon-btn" id="pf-toggle-hide" type="button" title="隱藏金額">👁️</button>
+        <button class="pf-icon-btn" id="pf-refresh" type="button" title="重新整理現價" aria-label="重新整理現價">⟳</button>
+        <button class="pf-icon-btn" id="pf-toggle-hide" type="button" title="隱藏金額" aria-label="隱藏金額">👁️</button>
         <button class="pf-switch" id="profile-switch" type="button">切換身份</button>
       </div>`;
     document.getElementById('profile-switch').addEventListener('click', () => {
@@ -537,7 +566,7 @@ async function fetchLatestPrice(code){
     const start = new Date(Date.now() - 20 * 24 * 60 * 60 * 1000);
     const startStr = start.toISOString().slice(0, 10);
     const url = `https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&data_id=${encodeURIComponent(code)}&start_date=${startStr}`;
-    const res = await fetch(url);
+    const res = await fetchWithTimeout(url, {}, 15000);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
     const rows = json.data || [];
@@ -811,11 +840,11 @@ async function recordSnapshotIfNeeded(value, cost){
   const today = new Date().toISOString().slice(0, 10);
   if (currentHistory.some(h => h.date === today)) return;
   try {
-    const res = await fetch(PORTFOLIO_ENDPOINT, {
+    const res = await fetchWithTimeout(PORTFOLIO_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ profileId, snapshot: { value, cost } }),
-    });
+    }, 20000);
     if (res.ok){
       const data = await res.json();
       currentHistory = data.history || currentHistory;
@@ -910,9 +939,9 @@ async function renderPortfolio(){
         <span class="amount">${r.gain !== null ? fmtSigned(Math.round(r.gain), 0) : '—'}</span>
         <span class="pct">${r.gainPct !== null ? fmtSigned(r.gainPct) + '%' : ''}</span>
       </span>
-      <button class="holding-action" data-analyze="${escapeHtml(r.code)}" data-name="${escapeHtml(r.name || '')}" title="查看 AI 分析">📄</button>
-      <button class="holding-action" data-edit="${i}" title="編輯">✎</button>
-      <button class="holding-action danger" data-delete="${i}" title="刪除">✕</button>
+      <button class="holding-action" data-analyze="${escapeHtml(r.code)}" data-name="${escapeHtml(r.name || '')}" title="查看 AI 分析" aria-label="查看 ${escapeHtml(r.name || r.code)} 的 AI 分析">📄</button>
+      <button class="holding-action" data-edit="${i}" title="編輯" aria-label="編輯 ${escapeHtml(r.name || r.code)}">✎</button>
+      <button class="holding-action danger" data-delete="${i}" title="刪除" aria-label="刪除 ${escapeHtml(r.name || r.code)}">✕</button>
       ${buildMeterRow(r)}
     </li>`;
   }).join('');
@@ -961,7 +990,7 @@ async function loadPortfolio(){
   if (!profileId) return;
   holdingListEl.innerHTML = '<li class="result-empty" style="padding:16px;">載入中…</li>';
   try {
-    const res = await fetch(`${PORTFOLIO_ENDPOINT}?profileId=${encodeURIComponent(profileId)}`, { cache: 'no-store' });
+    const res = await fetchWithTimeout(`${PORTFOLIO_ENDPOINT}?profileId=${encodeURIComponent(profileId)}`, { cache: 'no-store' }, 20000);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     currentHoldings = data.holdings || [];
@@ -969,7 +998,10 @@ async function loadPortfolio(){
     renderPortfolio();
   } catch (err){
     console.warn('[熱股雷達] 讀取持股失敗：', err);
-    holdingListEl.innerHTML = '<li class="result-error" style="margin:8px;"><strong>讀取持股失敗</strong>請檢查網路連線後重新整理頁面。</li>';
+    const isTimeout = err && err.name === 'TimeoutError';
+    holdingListEl.innerHTML = `<li class="result-error" style="margin:8px;"><strong>讀取持股失敗</strong>${isTimeout ? '請求逾時，' : ''}請檢查網路連線後<button class="holding-action" id="portfolio-retry-btn" style="border:1px solid var(--border); border-radius:6px; padding:2px 10px; margin-left:6px;" type="button">重試</button></li>`;
+    const retryBtn = document.getElementById('portfolio-retry-btn');
+    if (retryBtn) retryBtn.addEventListener('click', loadPortfolio);
   }
 }
 
@@ -977,14 +1009,15 @@ async function savePortfolio(){
   const profileId = getProfileId();
   if (!profileId) return;
   try {
-    await fetch(PORTFOLIO_ENDPOINT, {
+    await fetchWithTimeout(PORTFOLIO_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ profileId, holdings: currentHoldings }),
-    });
+    }, 20000);
   } catch (err){
     console.warn('[熱股雷達] 儲存持股失敗：', err);
-    pfHint.textContent = '儲存失敗，請檢查網路連線後再試一次。';
+    const isTimeout = err && err.name === 'TimeoutError';
+    pfHint.textContent = isTimeout ? '儲存逾時，請再試一次。' : '儲存失敗，請檢查網路連線後再試一次。';
     pfHint.className = 'pf-hint error';
   }
 }

@@ -1,107 +1,107 @@
 {
-    "tradingDates": [
-        "20261001",
-        "20260930",
-        "20260929"
-    ],
-    "baseDate": "20260924",
-    "marketDate": "20261001",
-    "marketStockCount": 1121,
-    "marketETFCount": 236,
-    "hotStocks": [
-        {
-            "code": "2330",
-            "name": "\u53f0\u7a4d\u96fb",
-            "price": 2510,
-            "changePct": 1.41,
-            "tradeVolume": 81841931,
-            "tradeValue": 203749806894,
-            "hotScore": 63.19
-        },
-        {
-            "code": "2409",
-            "name": "\u53cb\u9054",
-            "price": 38.3,
-            "changePct": 11.99,
-            "tradeVolume": 1904761389,
-            "tradeValue": 71535229505,
-            "hotScore": 61.07
-        },
-        {
-            "code": "2454",
-            "name": "\u806f\u767c\u79d1",
-            "price": 4980,
-            "changePct": -5.77,
-            "tradeVolume": 26428837,
-            "tradeValue": 132025127826,
-            "hotScore": 47.88
-        },
-        {
-            "code": "3481",
-            "name": "\u7fa4\u5275",
-            "price": 52.3,
-            "changePct": 5.55,
-            "tradeVolume": 1055464910,
-            "tradeValue": 55995447233,
-            "hotScore": 38.67
-        },
-        {
-            "code": "1303",
-            "name": "\u5357\u4e9e",
-            "price": 254,
-            "changePct": 6.72,
-            "tradeVolume": 259867503,
-            "tradeValue": 65404659947,
-            "hotScore": 32.75
-        }
-    ],
-    "hotETFs": [
-        {
-            "code": "0050",
-            "name": "\u5143\u5927\u53f0\u706350",
-            "price": 112.9,
-            "changePct": 0.44,
-            "tradeVolume": 226900996,
-            "tradeValue": 25415787974,
-            "hotScore": 64.96
-        },
-        {
-            "code": "00406A",
-            "name": "\u4e3b\u52d5\u4e2d\u4fe1\u53f0\u7063\u6536\u76ca",
-            "price": 10,
-            "changePct": 0,
-            "tradeVolume": 1319090678,
-            "tradeValue": 13088042728,
-            "hotScore": 55.9
-        },
-        {
-            "code": "00631L",
-            "name": "\u5143\u5927\u53f0\u706350\u6b632",
-            "price": 39.62,
-            "changePct": 1.93,
-            "tradeVolume": 356277308,
-            "tradeValue": 13899756777,
-            "hotScore": 42.46
-        },
-        {
-            "code": "00981A",
-            "name": "\u4e3b\u52d5\u7d71\u4e00\u53f0\u80a1\u589e\u9577",
-            "price": 31,
-            "changePct": 0.49,
-            "tradeVolume": 328043886,
-            "tradeValue": 10049077578,
-            "hotScore": 30.68
-        },
-        {
-            "code": "00685L",
-            "name": "\u7fa4\u76ca\u81fa\u7063\u52a0\u6b0a\u6b632",
-            "price": 13.1,
-            "changePct": 1.79,
-            "tradeVolume": 471354781,
-            "tradeValue": 6069615273,
-            "hotScore": 25.95
-        }
-    ],
-    "stockAIAnalysis": "# \ud83d\udd25 \u71b1\u9580\u80a1\u7968 Top 5 \u5206\u6790\n\n## 1. \u53f0\u7a4d\u96fb\uff082330\uff09\n- \u6700\u65b0\u80a1\u50f9\uff1a2,510 \u5143\n- \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+1.41%\n- \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 2,037.5 \u5104\u5143\n- \u71b1\u5ea6\u5206\u6578\uff1a63.19\n- \u5e02\u5834\u71b1\u5ea6\u5206\u6790\uff1a\u53f0\u7a4d\u96fb\u4ee5\u6700\u9ad8\u71b1\u5ea6\u5206\u6578\u5c45\u51a0\uff0c\u96d6\u7136\u8fd13\u65e5\u6f32\u8dcc\u5e45\u76f8\u5c0d\u6eab\u548c\uff0c\u4f46\u6210\u4ea4\u91d1\u984d\u9ad8\u9054\u5169\u5343\u5104\u4ee5\u4e0a\uff0c\u986f\u793a\u8cc7\u91d1\u4ecd\u5927\u91cf\u805a\u7126\u65bc\u6b0a\u503c\u9f8d\u982d\u80a1\uff0c\u5e02\u5834\u95dc\u6ce8\u5ea6\u8207\u8cc7\u91d1\u96c6\u4e2d\u5ea6\u7686\u70ba\u4e94\u6a94\u4e4b\u9996\u3002\n\n## 2. \u53cb\u9054\uff082409\uff09\n- \u6700\u65b0\u80a1\u50f9\uff1a38.3 \u5143\n- \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+11.99%\n- \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 715.4 \u5104\u5143\n- \u71b1\u5ea6\u5206\u6578\uff1a61.07\n- \u5e02\u5834\u71b1\u5ea6\u5206\u6790\uff1a\u53cb\u9054\u8fd13\u65e5\u6f32\u5e45\u8fd112%\uff0c\u70ba\u4e94\u6a94\u4e2d\u6f32\u5e45\u6700\u5927\u8005\uff0c\u4e14\u6210\u4ea4\u91cf\u905419\u5104\u80a1\u4ee5\u4e0a\uff0c\u986f\u793a\u6563\u6236\u8207\u77ed\u7dda\u8cc7\u91d1\u9ad8\u5ea6\u6d3b\u8e8d\uff0c\u9762\u677f\u65cf\u7fa4\u4eba\u6c23\u660e\u986f\u56de\u5347\uff0c\u5e36\u52d5\u71b1\u5ea6\u5206\u6578\u7dca\u8ffd\u53f0\u7a4d\u96fb\u3002\n\n## 3. \u806f\u767c\u79d1\uff082454\uff09\n- \u6700\u65b0\u80a1\u50f9\uff1a4,980 \u5143\n- \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a-5.77%\n- \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 1,320.3 \u5104\u5143\n- \u71b1\u5ea6\u5206\u6578\uff1a47.88\n- \u5e02\u5834\u71b1\u5ea6\u5206\u6790\uff1a\u806f\u767c\u79d1\u96d6\u80a1\u50f9\u8d70\u8dcc\u903e5%\uff0c\u4f46\u6210\u4ea4\u91d1\u984d\u4ecd\u9ad8\u5c45\u7b2c\u4e8c\uff0c\u986f\u793a\u5373\u4f7f\u5728\u4e0b\u8dcc\u683c\u5c40\u4e2d\uff0c\u5e02\u5834\u4ea4\u6613\u71b1\u5ea6\u8207\u8cc7\u91d1\u9032\u51fa\u4f9d\u7136\u6d3b\u7d61\uff0c\u5448\u73fe\u9ad8\u6ce2\u52d5\u3001\u9ad8\u95dc\u6ce8\u7684\u7279\u5fb5\u3002\n\n## 4. \u7fa4\u5275\uff083481\uff09\n- \u6700\u65b0\u80a1\u50f9\uff1a52.3 \u5143\n- \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+5.55%\n- \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 560.0 \u5104\u5143\n- \u71b1\u5ea6\u5206\u6578\uff1a38.67\n- \u5e02\u5834\u71b1\u5ea6\u5206\u6790\uff1a\u7fa4\u5275\u80a1\u50f9\u4e0a\u6f32\u4e14\u6210\u4ea4\u91cf\u8d85\u904e10\u5104\u80a1\uff0c\u8207\u53cb\u9054\u540c\u5c6c\u9762\u677f\u65cf\u7fa4\u9023\u52d5\u4e0a\u6f32\uff0c\u986f\u793a\u9762\u677f\u985e\u80a1\u8fd1\u671f\u8cb7\u6c23\u56de\u6eab\uff0c\u4f46\u6574\u9ad4\u71b1\u5ea6\u5206\u6578\u76f8\u5c0d\u524d\u4e09\u540d\u7565\u4f4e\u3002\n\n## 5. \u5357\u4e9e\uff081303\uff09\n- \u6700\u65b0\u80a1\u50f9\uff1a254 \u5143\n- \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+6.72%\n- \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 654.0 \u5104\u5143\n- \u71b1\u5ea6\u5206\u6578\uff1a32.75\n- \u5e02\u5834\u71b1\u5ea6\u5206\u6790\uff1a\u5357\u4e9e\u8fd13\u65e5\u6f32\u5e45\u90546.72%\uff0c\u6210\u4ea4\u91d1\u984d\u8207\u6210\u4ea4\u91cf\u76f8\u5c0d\u4e94\u6a94\u4e2d\u8f03\u4f4e\uff0c\u4f46\u6f32\u5e45\u8868\u73fe\u4ecd\u5c6c\u4eae\u773c\uff0c\u986f\u793a\u50b3\u7522\u5851\u5316\u65cf\u7fa4\u4e5f\u7372\u5f97\u90e8\u5206\u8cc7\u91d1\u9752\u775e\u3002\n\n## \ud83d\udccc \u80a1\u7968\u5e02\u5834\u89c0\u5bdf\n- \u534a\u5c0e\u9ad4\u96d9\u96c4\uff08\u53f0\u7a4d\u96fb\u3001\u806f\u767c\u79d1\uff09\u5408\u8a08\u6210\u4ea4\u91d1\u984d\u8d85\u904e3,300\u5104\u5143\uff0c\u986f\u793a\u8cc7\u91d1\u4ecd\u9ad8\u5ea6\u96c6\u4e2d\u65bc\u534a\u5c0e\u9ad4\u6b0a\u503c\u80a1\uff0c\u4f46\u5169\u8005\u8d70\u52e2\u5206\u6b67\uff0c\u53f0\u7a4d\u96fb\u4e0a\u6f32\u3001\u806f\u767c\u79d1\u4e0b\u8dcc\uff0c\u53cd\u6620\u65cf\u7fa4\u5167\u90e8\u8868\u73fe\u4e0d\u4e00\u3002\n- \u9762\u677f\u65cf\u7fa4\uff08\u53cb\u9054\u3001\u7fa4\u5275\uff09\u540c\u6b65\u4e0a\u6f32\uff0c\u4e14\u6210\u4ea4\u91cf\u7686\u9054\u5341\u5104\u80a1\u4ee5\u4e0a\uff0c\u986f\u793a\u9762\u677f\u985e\u80a1\u8fd1\u671f\u8cb7\u6c23\u660e\u986f\u56de\u5347\uff0c\u70ba\u5e02\u5834\u7126\u9ede\u4e4b\u4e00\u3002\n- \u53cb\u9054\u4ee5\u8fd112%\u6f32\u5e45\u5c45\u4e94\u6a94\u4e4b\u51a0\uff0c\u642d\u914d\u9ad8\u71b1\u5ea6\u5206\u6578\uff0c\u986f\u793a\u8a72\u80a1\u5728\u77ed\u7dda\u8cc7\u91d1\u63a8\u52d5\u4e0b\u4eba\u6c23\u6700\u65fa\u3002\n- \u806f\u767c\u79d1\u96d6\u4e0b\u8dcc\u903e5%\uff0c\u4f46\u6210\u4ea4\u91d1\u984d\u4ecd\u5c45\u6b21\u9ad8\uff0c\u986f\u793a\u4e0b\u8dcc\u904e\u7a0b\u4e2d\u4ecd\u4f34\u96a8\u5927\u91cf\u63db\u624b\uff0c\u6ce2\u52d5\u5ea6\u8207\u95dc\u6ce8\u5ea6\u4e26\u5b58\u3002\n- \u50b3\u7522\u80a1\u5357\u4e9e\u6f32\u5e45\u4ea6\u90546.72%\uff0c\u986f\u793a\u8cc7\u91d1\u984c\u6750\u4e0d\u50c5\u9650\u65bc\u79d1\u6280\u80a1\uff0c\u50b3\u7522\u5851\u5316\u985e\u80a1\u540c\u6a23\u53d7\u5230\u5e02\u5834\u6ce8\u610f\u3002",
-    "etfAIAnalysis": "# \ud83d\udd25 \u8fd13\u65e5\u53f0\u80a1\u71b1\u9580\u6392\u884c\n**\u7d71\u8a08\u4ea4\u6613\u65e5\uff1a20260929\u300120260930\u300120261001**\n\n## \ud83d\udcc8 \u71b1\u9580\u80a1\u7968 Top 5\n\n1. **\u53f0\u7a4d\u96fb\uff082330\uff09**\n   - \u6700\u65b0\u80a1\u50f9\uff1a2,510 \u5143\n   - \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+1.41%\n   - \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 2,037.5 \u5104\u5143\n   - \u71b1\u5ea6\u5206\u6578\uff1a63.19\n   - \u5e02\u5834\u7279\u8272\uff1a\u6210\u4ea4\u91d1\u984d\u5c45\u51a0\uff0c\u80a1\u50f9\u6eab\u548c\u4e0a\u6f32\uff0c\u8cc7\u91d1\u52d5\u80fd\u7a69\u5065\u96c6\u4e2d\u3002\n\n2. **\u53cb\u9054\uff082409\uff09**\n   - \u6700\u65b0\u80a1\u50f9\uff1a38.3 \u5143\n   - \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+11.99%\n   - \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 715.4 \u5104\u5143\n   - \u71b1\u5ea6\u5206\u6578\uff1a61.07\n   - \u5e02\u5834\u7279\u8272\uff1a\u6f32\u5e45\u6700\u5927\u4e14\u6210\u4ea4\u91cf\u9a5a\u4eba\uff0c\u5448\u73fe\u5f37\u70c8\u7684\u6295\u6a5f\u6027\u8cb7\u76e4\u6e67\u5165\u3002\n\n3. **\u806f\u767c\u79d1\uff082454\uff09**\n   - \u6700\u65b0\u80a1\u50f9\uff1a4,980 \u5143\n   - \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a-5.77%\n   - \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 1,320.3 \u5104\u5143\n   - \u71b1\u5ea6\u5206\u6578\uff1a47.88\n   - \u5e02\u5834\u7279\u8272\uff1a\u6210\u4ea4\u91d1\u984d\u4ecd\u9ad8\u4f46\u80a1\u50f9\u660e\u986f\u4e0b\u8dcc\uff0c\u986f\u793a\u8ce3\u58d3\u8207\u8cc7\u91d1\u9032\u51fa\u540c\u6b65\u5287\u70c8\u3002\n\n4. **\u7fa4\u5275\uff083481\uff09**\n   - \u6700\u65b0\u80a1\u50f9\uff1a52.3 \u5143\n   - \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+5.55%\n   - \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 560.0 \u5104\u5143\n   - \u71b1\u5ea6\u5206\u6578\uff1a38.67\n   - \u5e02\u5834\u7279\u8272\uff1a\u50f9\u91cf\u9f4a\u63da\uff0c\u9762\u677f\u65cf\u7fa4\u540c\u6b65\u6d3b\u7d61\u7684\u4ee3\u8868\u500b\u80a1\u3002\n\n5. **\u5357\u4e9e\uff081303\uff09**\n   - \u6700\u65b0\u80a1\u50f9\uff1a254 \u5143\n   - \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+6.72%\n   - \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 654.0 \u5104\u5143\n   - \u71b1\u5ea6\u5206\u6578\uff1a32.75\n   - \u5e02\u5834\u7279\u8272\uff1a\u50b3\u7522\u6b0a\u503c\u80a1\u4e0a\u6f32\u5e36\u91cf\uff0c\u986f\u793a\u8cc7\u91d1\u8f2a\u52d5\u81f3\u50b3\u7522\u985e\u80a1\u3002\n\n---\n\n## \ud83d\udcca \u71b1\u9580 ETF Top 5\n\n1. **\u5143\u5927\u53f0\u706350\uff080050\uff09**\n   - \u6700\u65b0\u50f9\u683c\uff1a112.9 \u5143\n   - \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+0.44%\n   - \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 254.2 \u5104\u5143\n   - \u71b1\u5ea6\u5206\u6578\uff1a64.96\n   - \u5e02\u5834\u7279\u8272\uff1a\u5927\u578b\u6b0a\u503c\u578bETF\u6210\u4ea4\u91cf\u6700\u5927\uff0c\u8cc7\u91d1\u7a69\u5b9a\u6d41\u5165\u6307\u6a19\u578b\u6a19\u7684\u3002\n\n2. **\u4e3b\u52d5\u4e2d\u4fe1\u53f0\u7063\u6536\u76ca\uff0800406A\uff09**\n   - \u6700\u65b0\u50f9\u683c\uff1a10 \u5143\n   - \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a0.00%\n   - \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 130.9 \u5104\u5143\n   - \u71b1\u5ea6\u5206\u6578\uff1a55.9\n   - \u5e02\u5834\u7279\u8272\uff1a\u50f9\u683c\u6301\u5e73\u4f46\u6210\u4ea4\u91cf\u9f90\u5927\uff0c\u986f\u793a\u8cc7\u91d1\u983b\u7e41\u9032\u51fa\u6b64\u6a94\u6536\u76ca\u578bETF\u3002\n\n3. **\u5143\u5927\u53f0\u706350\u6b632\uff0800631L\uff09**\n   - \u6700\u65b0\u50f9\u683c\uff1a39.62 \u5143\n   - \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+1.93%\n   - \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 139.0 \u5104\u5143\n   - \u71b1\u5ea6\u5206\u6578\uff1a42.46\n   - \u5e02\u5834\u7279\u8272\uff1a\u69d3\u687f\u578bETF\u96a8\u5927\u76e4\u8d70\u5347\u540c\u6b65\u6d3b\u7d61\uff0c\u986f\u793a\u77ed\u7dda\u64cd\u4f5c\u6c23\u6c1b\u6fc3\u539a\u3002\n\n4. **\u4e3b\u52d5\u7d71\u4e00\u53f0\u80a1\u589e\u9577\uff0800981A\uff09**\n   - \u6700\u65b0\u50f9\u683c\uff1a31 \u5143\n   - \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+0.49%\n   - \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 100.5 \u5104\u5143\n   - \u71b1\u5ea6\u5206\u6578\uff1a30.68\n   - \u5e02\u5834\u7279\u8272\uff1a\u4e3b\u52d5\u5f0fETF\u7dad\u6301\u7a69\u5b9a\u95dc\u6ce8\u5ea6\uff0c\u50f9\u683c\u6ce2\u52d5\u76f8\u5c0d\u6eab\u548c\u3002\n\n5. **\u7fa4\u76ca\u81fa\u7063\u52a0\u6b0a\u6b632\uff0800685L\uff09**\n   - \u6700\u65b0\u50f9\u683c\uff1a13.1 \u5143\n   - \u8fd13\u65e5\u6f32\u8dcc\u5e45\uff1a+1.79%\n   - \u8fd13\u65e5\u7d2f\u8a08\u6210\u4ea4\u91d1\u984d\uff1a\u7d04 60.7 \u5104\u5143\n   - \u71b1\u5ea6\u5206\u6578\uff1a25.95\n   - \u5e02\u5834\u7279\u8272\uff1a\u52a0\u6b0a\u6307\u6578\u69d3\u687f\u578bETF\u5c0f\u5e45\u4e0a\u6f32\uff0c\u5438\u5f15\u4e2d\u77ed\u7dda\u8cc7\u91d1\u53c3\u8207\u3002\n\n---\n\n## \ud83d\udd0e \u5e02\u5834\u89c0\u5bdf\n\n- **\u8cc7\u91d1\u96c6\u4e2d\u5ea6**\uff1a\u500b\u80a1\u8cc7\u91d1\u660e\u986f\u96c6\u4e2d\u5728 **\u53f0\u7a4d\u96fb** \u8207 **\u806f\u767c\u79d1** \u5169\u5927\u534a\u5c0e\u9ad4\u6b0a\u503c\u80a1\uff0c\u5408\u8a08\u8fd13\u65e5\u6210\u4ea4\u91d1\u984d\u8d85\u904e3,300\u5104\u5143\uff0c\u986f\u793a\u6676\u7247\u985e\u80a1\u4ecd\u662f\u5e02\u5834\u7126\u9ede\u3002\n- **\u6f32\u8dcc\u8207\u71b1\u5ea6\u95dc\u4fc2**\uff1a\n  - \u591a\u6578\u71b1\u9580\u80a1\uff08\u53cb\u9054\u3001\u7fa4\u5275\u3001\u5357\u4e9e\uff09\u5448\u73fe\u300c\u50f9\u91cf\u9f4a\u63da\u300d\uff0c\u986f\u793a\u8cc7\u91d1\u8ffd\u50f9\u610f\u9858\u5f37\u3002\n  - **\u806f\u767c\u79d1\u70ba\u4f8b\u5916**\uff1a\u6210\u4ea4\u91d1\u984d\u9ad8\u90541,320\u5104\u5143\uff0c\u4f46\u80a1\u50f9\u4e0b\u8dcc5.77%\uff0c\u5c6c\u65bc\u300c\u6210\u4ea4\u71b1\u3001\u80a1\u50f9\u8d70\u5f31\u300d\u7684\u89c0\u5bdf\u91cd\u9ede\uff0c\u53ef\u80fd\u53cd\u6620\u7372\u5229\u4e86\u7d50\u6216\u6d88\u606f\u9762\u58d3\u529b\u3002\n- **ETF\u8cc7\u91d1\u52d5\u5411**\uff1a\u4e3b\u8981\u96c6\u4e2d\u5728 **\u5927\u578b\u6b0a\u503c\u578b\uff080050\uff09** \u8207 **\u69d3\u687f\u578b\uff0800631L\u300100685L\uff09**\uff0c\u986f\u793a\u5e02\u5834\u5c0d\u5927\u76e4\u65b9\u5411\u7684\u64cd\u4f5c\u9700\u6c42\u5347\u9ad8\uff0c\u540c\u6642\u6536\u76ca\u578bETF\uff0800406A\uff09\u96d6\u50f9\u683c\u6301\u5e73\uff0c\u4f46\u6210\u4ea4\u91cf\u7570\u5e38\u9f90\u5927\uff0c\u986f\u793a\u8cc7\u91d1\u983b\u7e41\u63db\u624b\u3002\n- **\u80a1\u7968 vs ETF \u71b1\u5ea6\u6bd4\u8f03**\uff1a\n  - \u500b\u80a1\u6574\u9ad4\u6210\u4ea4\u91d1\u984d\u8207\u71b1\u5ea6\u5206\u6578\u7686\u9ad8\u65bcETF\uff0c\u986f\u793a\u8cc7\u91d1\u66f4\u504f\u597d\u500b\u80a1\u64cd\u4f5c\uff0c\u5c24\u5176\u662f\u9ad8\u6ce2\u52d5\u6027\u6a19\u7684\uff08\u5982\u53cb\u9054\u3001\u806f\u767c\u79d1\uff09\u3002\n  - ETF\u65b9\u9762\u5247\u5448\u73fe\u300c\u5927\u76e4\u578b+\u69d3\u687f\u578b\u300d\u96d9\u8ecc\u71b1\u7d61\uff0c\u53cd\u6620\u5e02\u5834\u5c0d\u6307\u6578\u8da8\u52e2\u7684\u95dc\u6ce8\u3002\n\n---\n\n## \ud83c\udfaf \u4eca\u65e5\u91cd\u9ede\n\n1. **\u534a\u5c0e\u9ad4\u6b0a\u503c\u80a1\u8cc7\u91d1\u9ad8\u5ea6\u96c6\u4e2d**\uff1a\u53f0\u7a4d\u96fb\u3001\u806f\u767c\u79d1\u5408\u8a08\u6210\u4ea4\u91d1\u984d\u903e3,300\u5104\u5143\uff0c\u70ba\u5e02\u5834\u8cc7\u91d1\u4e3b\u8981\u532f\u805a\u8655\u3002\n2. **\u53cb\u9054\u6f32\u5e45\u9a5a\u4eba\u4e14\u91cf\u80fd\u7206\u5927**\uff1a\u8fd13\u65e5\u5927\u6f32\u8fd112%\uff0c\u70ba\u500b\u80a1\u71b1\u5ea6\u6700\u5f37\u7684\u6a19\u7684\u4e4b\u4e00\uff0c\u986f\u793a\u9762\u677f\u65cf\u7fa4\u6295\u6a5f\u6c23\u6c1b\u6fc3\u539a\u3002\n3. **\u806f\u767c\u79d1\u300c\u91cf\u5927\u50f9\u8dcc\u300d\u503c\u5f97\u7559\u610f**\uff1a\u6210\u4ea4\u91d1\u984d\u9ad8\u5c45\u7b2c\u4e8c\uff0c\u4f46\u80a1\u50f9\u9006\u52e2\u4e0b\u8dcc\uff0c\u986f\u793a\u591a\u7a7a\u5206\u6b67\u660e\u986f\u3002\n4. **\u50b3\u7522\u8207\u9762\u677f\u80a1\u540c\u6b65\u6d3b\u7d61**\uff1a\u5357\u4e9e\u3001\u7fa4\u5275\u7686\u5448\u50f9\u91cf\u9f4a\u63da\uff0c\u986f\u793a\u8cc7\u91d1\u6709\u8f2a\u52d5\u81f3\u50b3\u7522\u8207\u9762\u677f\u65cf\u7fa4\u7684\u8de1\u8c61\u3002\n5. **ETF\u5e02\u5834\u504f\u5411\u5927\u76e4\u8207\u69d3\u687f\u64cd\u4f5c**\uff1a0050\u8207\u5169\u6a94\u69d3\u687fETF\u540c\u5217\u71b1\u9580\uff0c\u986f\u793a\u6295\u8cc7\u4eba\u5c0d\u5927\u76e4\u8d70\u52e2\u7684\u8ffd\u8e64\u8207\u64cd\u4f5c\u9700\u6c42\u5347\u6eab\u3002\n\n---\n\u26a0\ufe0f \u4ee5\u4e0a\u5167\u5bb9\u50c5\u6839\u64da\u63d0\u4f9b\u6578\u64da\u6574\u7406\uff0c\u50c5\u4f9b\u5e02\u5834\u7814\u7a76\u53c3\u8003\uff0c\u4e0d\u69cb\u6210\u4efb\u4f55\u6295\u8cc7\u5efa\u8b70\u3002"
+  "tradingDates": [
+    "20261102",
+    "20261030",
+    "20261029"
+  ],
+  "baseDate": "20261028",
+  "marketDate": "20261102",
+  "marketStockCount": 1129,
+  "marketETFCount": 236,
+  "hotStocks": [
+    {
+      "code": "2330",
+      "name": "台積電",
+      "price": 2330,
+      "changePct": -3.92,
+      "tradeVolume": 96184915,
+      "tradeValue": 227100619841,
+      "hotScore": 68.88
+    },
+    {
+      "code": "2303",
+      "name": "聯電",
+      "price": 110,
+      "changePct": -14.06,
+      "tradeVolume": 719898298,
+      "tradeValue": 81406161041,
+      "hotScore": 58.96
+    },
+    {
+      "code": "2409",
+      "name": "友達",
+      "price": 30.75,
+      "changePct": -13.5,
+      "tradeVolume": 801587135,
+      "tradeValue": 25753469087,
+      "hotScore": 46.8
+    },
+    {
+      "code": "2454",
+      "name": "聯發科",
+      "price": 3970,
+      "changePct": -6.26,
+      "tradeVolume": 32376492,
+      "tradeValue": 128479742345,
+      "hotScore": 44.34
+    },
+    {
+      "code": "2308",
+      "name": "台達電",
+      "price": 1355,
+      "changePct": -12.58,
+      "tradeVolume": 62837312,
+      "tradeValue": 86014574776,
+      "hotScore": 39.68
+    }
+  ],
+  "hotETFs": [
+    {
+      "code": "0050",
+      "name": "元大台灣50",
+      "price": 104.1,
+      "changePct": -4.19,
+      "tradeVolume": 474846631,
+      "tradeValue": 49753100082,
+      "hotScore": 70.11
+    },
+    {
+      "code": "00406A",
+      "name": "主動中信台灣收益",
+      "price": 8.58,
+      "changePct": -6.54,
+      "tradeVolume": 3106228921,
+      "tradeValue": 26916878637,
+      "hotScore": 67.27
+    },
+    {
+      "code": "00631L",
+      "name": "元大台灣50正2",
+      "price": 33.83,
+      "changePct": -8.27,
+      "tradeVolume": 785143616,
+      "tradeValue": 27004621454,
+      "hotScore": 51.29
+    },
+    {
+      "code": "00685L",
+      "name": "群益臺灣加權正2",
+      "price": 11.17,
+      "changePct": -8.52,
+      "tradeVolume": 1206989162,
+      "tradeValue": 13668348294,
+      "hotScore": 38.98
+    },
+    {
+      "code": "00981A",
+      "name": "主動統一台股增長",
+      "price": 26.57,
+      "changePct": -7.26,
+      "tradeVolume": 677452216,
+      "tradeValue": 18179434704,
+      "hotScore": 38.27
+    }
+  ],
+  "stockAIAnalysis": "# 🔥 熱門股票 Top 5 分析\n\n## 1. 台積電（2330）\n- 最新股價：2330 元\n- 近3日漲跌幅：-3.92%\n- 近3日累計成交金額：約2,271.01億元\n- 熱度分數：68.88\n- 市場熱度分析：台積電以最高熱度分數穩居榜首，雖然累積跌幅相對其他個股較為溫和，但成交金額遠超其餘四檔，顯示市場資金高度關注，交投動能強勁，為台股權值指標股之一，市場波動對大盤影響顯著。\n\n## 2. 聯電（2303）\n- 最新股價：110 元\n- 近3日漲跌幅：-14.06%\n- 近3日累計成交金額：約814.06億元\n- 熱度分數：58.96\n- 市場熱度分析：聯電近3日跌幅在五檔中最為劇烈，且成交量高達7.2億股，顯示市場短線交易相當活躍，籌碼鬆動明顯，呈現高波動、高周轉的熱門股特徵。\n\n## 3. 友達（2409）\n- 最新股價：30.75 元\n- 近3日漲跌幅：-13.5%\n- 近3日累計成交金額：約257.53億元\n- 熱度分數：46.8\n- 市場熱度分析：友達雖然股價基期較低，但成交量達8億股以上，為五檔中成交量最大者，顯示散戶與短線資金熱絡參與，股價跌幅亦相對明顯，呈現高度投機性交易特徵。\n\n## 4. 聯發科（2454）\n- 最新股價：3970 元\n- 近3日漲跌幅：-6.26%\n- 近3日累計成交金額：約1,284.80億元\n- 熱度分數：44.34\n- 市場熱度分析：聯發科股價位階高，雖然成交量相對較低，但成交金額仍居五檔第二，顯示該股以大額資金交易為主，跌幅相對台積電略深，反映市場對半導體設計類股的關注度仍高。\n\n## 5. 台達電（2308）\n- 最新股價：1355 元\n- 近3日漲跌幅：-12.58%\n- 近3日累計成交金額：約860.15億元\n- 熱度分數：39.68\n- 市場熱度分析：台達電近3日跌幅居五檔中第二深，熱度分數則為五檔最低，顯示市場對其關注度相對較弱，但仍維持一定的成交規模，顯示法人與中實戶持續留意其股價表現。\n\n## 📌 股票市場觀察\n- 五檔熱門股近3日均呈現下跌走勢，顯示近期台股整體氣氛偏空，電子權值股普遍承壓。\n- 台積電與聯發科雖跌幅相對較小，但成交金額龐大，顯示資金仍集中於權值科技股。\n- 聯電、友達、台達電跌幅皆超過12%，顯示中小型權值股或面板、被動元件類股波動劇烈，短線賣壓沉重。\n- 友達與聯電成交量龐大，反映市場投機性資金活躍，籌碼周轉率高。\n- 整體而言，熱門股排行呈現「高跌幅、高成交量」特徵，顯示市場短期波動加劇，投資人需留意風險控管。",
+  "etfAIAnalysis": "# 🔥 近3日台股熱門排行\n\n## 📈 熱門股票 Top 5\n\n1. **台積電（2330）**\n   - 最新股價：2330 元\n   - 近3日漲跌幅：-3.92%\n   - 近3日累計成交金額：約 2,271 億元\n   - 熱度分數：68.88\n   - 市場熱度特色：成交金額居冠，跌幅相對較小，資金仍大量聚焦於權值龍頭股。\n\n2. **聯電（2303）**\n   - 最新股價：110 元\n   - 近3日漲跌幅：-14.06%\n   - 近3日累計成交金額：約 814 億元\n   - 熱度分數：58.96\n   - 市場熱度特色：跌幅最深、成交量最大，呈現「重挫但交易極度熱絡」現象。\n\n3. **友達（2409）**\n   - 最新股價：30.75 元\n   - 近3日漲跌幅：-13.5%\n   - 近3日累計成交金額：約 258 億元\n   - 熱度分數：46.8\n   - 市場熱度特色：成交量居所有熱門股之冠，但跌幅明顯，顯示籌碼大量換手。\n\n4. **聯發科（2454）**\n   - 最新股價：3970 元\n   - 近3日漲跌幅：-6.26%\n   - 近3日累計成交金額：約 1,285 億元\n   - 熱度分數：44.34\n   - 市場熱度特色：成交金額排名第二，跌幅中等，仍為資金高度關注的權值科技股。\n\n5. **台達電（2308）**\n   - 最新股價：1355 元\n   - 近3日漲跌幅：-12.58%\n   - 近3日累計成交金額：約 860 億元\n   - 熱度分數：39.68\n   - 市場熱度特色：跌幅較大，成交金額仍維持高檔，顯示賣壓與承接皆活躍。\n\n---\n\n## 📊 熱門 ETF Top 5\n\n1. **元大台灣50（0050）**\n   - 最新價格：104.1 元\n   - 近3日漲跌幅：-4.19%\n   - 近3日累計成交金額：約 498 億元\n   - 熱度分數：70.11\n   - 市場關注特色：熱度分數最高，為大型權值ETF中資金最集中標的。\n\n2. **主動中信台灣收益（00406A）**\n   - 最新價格：8.58 元\n   - 近3日漲跌幅：-6.54%\n   - 近3日累計成交金額：約 269 億元\n   - 熱度分數：67.27\n   - 市場關注特色：成交量高達31億股以上，顯示低價ETF吸引大量交易熱度。\n\n3. **元大台灣50正2（00631L）**\n   - 最新價格：33.83 元\n   - 近3日漲跌幅：-8.27%\n   - 近3日累計成交金額：約 270 億元\n   - 熱度分數：51.29\n   - 市場關注特色：槓桿型ETF跌幅放大，交易活躍度高，反映市場波動加劇。\n\n4. **群益臺灣加權正2（00685L）**\n   - 最新價格：11.17 元\n   - 近3日漲跌幅：-8.52%\n   - 近3日累計成交金額：約 137 億元\n   - 熱度分數：38.98\n   - 市場關注特色：跌幅居ETF之冠，槓桿效應明顯放大市場下跌幅度。\n\n5. **主動統一台股增長（00981A）**\n   - 最新價格：26.57 元\n   - 近3日漲跌幅：-7.26%\n   - 近3日累計成交金額：約 182 億元\n   - 熱度分數：38.27\n   - 市場關注特色：主動式ETF同樣下跌，顯示整體台股ETF市場氣氛偏弱。\n\n---\n\n## 🔎 市場觀察\n\n- **資金集中標的**：資金主要集中在台積電、聯發科等權值科技股，以及0050、00406A等大型ETF，顯示市場焦點仍圍繞在半導體與大型權值股。\n- **上漲 vs 下跌熱絡**：本期所有熱門股票與ETF皆為下跌，顯示近3日市場屬於「下跌但交易熱絡」型態，並非資金追價上漲，而是賣壓或換手量能放大。\n- **ETF資金類型**：資金集中在大型市值型ETF（0050）、主動式ETF（00406A、00981A）以及槓桿型ETF（00631L、00685L），顯示投資人同時關注追蹤大盤與槓桿操作工具。\n- **股票 vs ETF熱度比較**：股票端成交金額規模（尤其台積電、聯發科）明顯高於ETF，顯示個股交易熱度略勝一籌，但ETF熱度分數（0050、00406A）亦相當接近，顯示兩邊關注度皆高。\n- **成交熱但股價重挫標的**：聯電（-14.06%）、友達（-13.5%）、台達電（-12.58%）皆出現「成交量/金額龐大但股價重挫」情況，尤其聯電與友達的成交量皆超過7億股以上，值得留意市場籌碼大幅換手的情形。\n\n---\n\n## 🎯 今日重點\n\n1. 近3日台股熱門股票與ETF全數下跌，市場呈現普遍性的賣壓格局。\n2. 台積電與聯發科雖下跌，但成交金額仍居冠亞軍，顯示資金並未離開權值科技股，而是高度換手。\n3. 聯電、友達成交量異常龐大，且跌幅居前，顯示中小型科技股籌碼劇烈變動，需留意後續股價走勢。\n4. 槓桿型ETF（00631L、00685L）跌幅皆超過8%，反映槓桿操作在盤勢下跌時風險被放大。\n5. 整體而言，近3日資金熱度集中在「科技權值股＋大型／槓桿ETF」，但方向偏向下跌整理，顯示市場氣氛轉為謹慎。\n\n---\n以上僅根據提供數據整理，僅供市場研究參考，不構成任何投資建議。"
 }
