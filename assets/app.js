@@ -7,6 +7,9 @@
 const HOT_STOCKS_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks";
 const AI_STOCK_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks-ai-stock";
 const AI_ETF_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks-ai-etf";
+const AI_OPPORTUNITIES_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks-opportunities";
+const BACKTEST_ENDPOINT = "https://kailinstock.zeabur.app/webhook/backtest";
+const PORTFOLIO_ANALYSIS_ENDPOINT = "https://kailinstock.zeabur.app/webhook/portfolio-analysis";
 const STOCK_ANALYSIS_ENDPOINT = "https://kailinstock.zeabur.app/webhook/stock-analysis";
 const LOCAL_SNAPSHOT_PATH = "data/snapshot.json";
 
@@ -207,6 +210,11 @@ function renderRanking(){
     ? mdToHtml(etfSection) +
       '<div class="note">註：ETF 專屬分析同樣可能受來源回應長度限制而不完整。</div>'
     : '<p class="chart-empty">AI 分析產生中，通常需要 20～30 秒，請稍候…</p>';
+
+  document.getElementById('ai-opportunities').innerHTML = SNAPSHOT.tradeOpportunities
+    ? mdToHtml(SNAPSHOT.tradeOpportunities) +
+      '<div class="note">註：進場價格、停損、目標價皆由程式依技術指標（支撐壓力、ATR）計算得出，AI 僅負責解讀與排序，不構成投資建議。</div>'
+    : '<p class="chart-empty">交易機會掃描產生中，通常需要 60～90 秒（每檔都要抓技術面＋營收再交給 AI 比較），請稍候…</p>';
 }
 
 function renderAll(){
@@ -242,10 +250,11 @@ async function loadLiveSnapshot(){
   return res.json();
 }
 
-async function loadAIField(url, field){
+async function loadAIField(url, field, timeoutMs = 60000){
   try {
-    // AI 分析端點背後要排隊呼叫 Claude，正常約 20～30 秒，60 秒逾時留了充分餘裕
-    const res = await fetchWithTimeout(url, { cache: 'no-store' }, 60000);
+    // AI 分析端點背後要排隊呼叫 Claude，正常約 20～30 秒；交易機會掃描要對5檔
+    // 個股各自抓技術面+營收再彙整給 AI，實測可能到 80 秒，呼叫端會傳入較長逾時
+    const res = await fetchWithTimeout(url, { cache: 'no-store' }, timeoutMs);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     if (data[field]){
@@ -276,6 +285,7 @@ async function refreshLive(){
   }
   loadAIField(AI_STOCK_ENDPOINT, 'stockAIAnalysis');
   loadAIField(AI_ETF_ENDPOINT, 'etfAIAnalysis');
+  loadAIField(AI_OPPORTUNITIES_ENDPOINT, 'tradeOpportunities', 110000);
 }
 
 async function init(){
@@ -430,6 +440,10 @@ async function queryStock(code, name){
     connDot.className = 'conn-dot ok';
     statusText.textContent = `已連線 · ${code} 查詢成功`;
     renderStockReport(code, name, text);
+    lastSearchedCode = code;
+    lastSearchedName = name;
+    backtestBtn.disabled = false;
+    backtestBtn.textContent = `對 ${name || code} 執行回測`;
   } catch (err){
     connDot.className = 'conn-dot err';
     let title = '查詢失敗';
@@ -468,6 +482,53 @@ searchForm.addEventListener('submit', e => {
   const name = codeToName.get(code) || null;
   queryStock(code, name);
 });
+
+// ---------- 策略回測 ----------
+let lastSearchedCode = null;
+let lastSearchedName = null;
+const backtestBtn = document.getElementById('backtest-btn');
+const backtestStatusText = document.getElementById('backtest-status-text');
+const backtestConnDot = document.getElementById('backtest-conn-dot');
+const backtestResultArea = document.getElementById('backtest-result-area');
+
+async function runBacktest(){
+  if (!lastSearchedCode) return;
+  backtestBtn.disabled = true;
+  backtestStatusText.textContent = `回測中…（${lastSearchedName || lastSearchedCode}）`;
+  backtestConnDot.className = 'conn-dot';
+  backtestResultArea.innerHTML = '<p class="result-empty">回測中，請稍候（抓取最長6年歷史股價並跑兩種策略，約需 30～60 秒）…</p>';
+
+  try {
+    const res = await fetchWithTimeout(`${BACKTEST_ENDPOINT}?stockCode=${encodeURIComponent(lastSearchedCode)}`, { method: 'POST' }, 100000);
+    const text = await res.text();
+    if (!res.ok) throw { kind: 'http', status: res.status };
+    backtestConnDot.className = 'conn-dot ok';
+    backtestStatusText.textContent = `已連線 · ${lastSearchedCode} 回測完成`;
+    backtestResultArea.innerHTML = `
+      <div class="report-meta mono">${escapeHtml(lastSearchedCode)} · ${fmtTime(new Date())} 回測</div>
+      ${mdToHtml(text)}
+    `;
+  } catch (err){
+    backtestConnDot.className = 'conn-dot err';
+    let title = '回測失敗';
+    let detail = '發生未預期的錯誤，請稍後再試。';
+    if (err && err.name === 'TimeoutError'){
+      title = '回測逾時';
+      detail = '已等待超過100秒仍未收到回應，請稍後再試一次。';
+    } else if (err && err.kind === 'http'){
+      title = `伺服器回應錯誤（HTTP ${err.status}）`;
+      detail = '請確認 n8n workflow 是否正常執行。';
+    }
+    backtestStatusText.textContent = title;
+    backtestResultArea.innerHTML = `<div class="result-error"><strong>${escapeHtml(title)}</strong>${escapeHtml(detail)}</div><button class="holding-action" id="backtest-retry-btn" style="margin-top:10px; border:1px solid var(--border); border-radius:8px; padding:6px 14px; font-size:12.5px;" type="button">重試</button>`;
+    const retryBtn = document.getElementById('backtest-retry-btn');
+    if (retryBtn) retryBtn.addEventListener('click', runBacktest);
+  } finally {
+    backtestBtn.disabled = false;
+  }
+}
+
+backtestBtn.addEventListener('click', runBacktest);
 
 loadStockList();
 
@@ -1123,6 +1184,60 @@ holdingListEl.addEventListener('click', e => {
     renderPortfolio();
   }
 });
+
+// ---------- 投資組合風險分析 ----------
+const portfolioAnalysisBtn = document.getElementById('portfolio-analysis-btn');
+const portfolioAnalysisStatusText = document.getElementById('portfolio-analysis-status-text');
+const portfolioAnalysisConnDot = document.getElementById('portfolio-analysis-conn-dot');
+const portfolioAnalysisResult = document.getElementById('portfolio-analysis-result');
+
+async function runPortfolioAnalysis(){
+  const profileId = getProfileId();
+  if (!profileId) return;
+  portfolioAnalysisBtn.disabled = true;
+  portfolioAnalysisStatusText.textContent = '分析中…';
+  portfolioAnalysisConnDot.className = 'conn-dot';
+  portfolioAnalysisResult.innerHTML = '<p class="result-empty">分析中，請稍候（抓取每檔持股近1年股價並計算相關性，約需 20～40 秒）…</p>';
+
+  try {
+    const res = await fetchWithTimeout(`${PORTFOLIO_ANALYSIS_ENDPOINT}?profileId=${encodeURIComponent(profileId)}`, { cache: 'no-store' }, 80000);
+    if (!res.ok) throw { kind: 'http', status: res.status };
+    const data = await res.json();
+    portfolioAnalysisConnDot.className = 'conn-dot ok';
+
+    if (data.insufficientHoldings){
+      portfolioAnalysisStatusText.textContent = '持股不足';
+      portfolioAnalysisResult.innerHTML = `<p class="result-empty">${escapeHtml(data.message || '至少需要2檔不同持股才能進行分析')}</p>`;
+      return;
+    }
+    if (!data.portfolioAnalysis){
+      throw new Error('回應格式不正確');
+    }
+    portfolioAnalysisStatusText.textContent = `已連線 · ${fmtTime(new Date())} 分析完成`;
+    portfolioAnalysisResult.innerHTML = `
+      <div class="report-meta mono">${fmtTime(new Date())} 分析</div>
+      ${mdToHtml(data.portfolioAnalysis)}
+    `;
+  } catch (err){
+    portfolioAnalysisConnDot.className = 'conn-dot err';
+    let title = '分析失敗';
+    let detail = '發生未預期的錯誤，請稍後再試。';
+    if (err && err.name === 'TimeoutError'){
+      title = '分析逾時';
+      detail = '已等待超過80秒仍未收到回應，請稍後再試一次。';
+    } else if (err && err.kind === 'http'){
+      title = `伺服器回應錯誤（HTTP ${err.status}）`;
+    }
+    portfolioAnalysisStatusText.textContent = title;
+    portfolioAnalysisResult.innerHTML = `<div class="result-error"><strong>${escapeHtml(title)}</strong>${escapeHtml(detail)}</div><button class="holding-action" id="portfolio-analysis-retry-btn" style="margin-top:10px; border:1px solid var(--border); border-radius:8px; padding:6px 14px; font-size:12.5px;" type="button">重試</button>`;
+    const retryBtn = document.getElementById('portfolio-analysis-retry-btn');
+    if (retryBtn) retryBtn.addEventListener('click', runPortfolioAnalysis);
+  } finally {
+    portfolioAnalysisBtn.disabled = false;
+  }
+}
+
+portfolioAnalysisBtn.addEventListener('click', runPortfolioAnalysis);
 
 renderProfileBar();
 if (getProfileId()) loadPortfolio();

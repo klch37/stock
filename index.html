@@ -7,7 +7,7 @@
 <meta name="description" content="Kailin 的台股熱門排行與 AI 分析追蹤面板，資料來自 n8n workflow（kailinstock）。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/styles.css?v=20261103a">
+<link rel="stylesheet" href="assets/styles.css?v=20261104a">
 </head>
 <body>
 
@@ -94,6 +94,11 @@
           <div class="card-body prose scroll-fade" id="ai-etfs"></div>
         </div>
       </div>
+
+      <div class="card" style="margin-bottom:18px;">
+        <div class="card-head"><h3>🎯 今日交易機會掃描</h3><span class="hint">進場/停損/目標價 · 程式計算</span></div>
+        <div class="card-body prose scroll-fade" id="ai-opportunities"></div>
+      </div>
     </section>
 
     <!-- ===== 個股分析 ===== -->
@@ -113,6 +118,21 @@
           </div>
           <div class="result-area" id="result-area">
             <p class="result-empty">查詢結果會顯示在這裡。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card search-card">
+        <div class="card-head"><h3>📊 策略回測</h3><span class="hint">backtest workflow</span></div>
+        <div class="card-body prose" style="padding:20px 22px;">
+          <p class="search-intro">用真實歷史股價（最長約6年）回測均線交叉、RSI背離兩種策略，計算勝率、獲利因子、最大回撤。請先在上方查詢一檔股票，再對同一檔跑回測。</p>
+          <button type="button" id="backtest-btn" class="btn-accent" disabled>請先查詢個股</button>
+          <div class="search-status" id="backtest-status">
+            <span class="conn-dot" id="backtest-conn-dot"></span>
+            <span id="backtest-status-text">尚未執行</span>
+          </div>
+          <div class="result-area" id="backtest-result-area">
+            <p class="result-empty">回測結果會顯示在這裡。</p>
           </div>
         </div>
       </div>
@@ -161,6 +181,21 @@
           <div class="card-body prose chart-card-body" id="chart-trend"></div>
         </div>
 
+        <div class="card" style="margin-bottom:18px;">
+          <div class="card-head"><h3>🧭 投資組合風險分析</h3><span class="hint">相關性/集中度/避險 · 至少2檔持股</span></div>
+          <div class="card-body prose" style="padding:18px 22px;">
+            <p class="search-intro">計算持股之間的相關係數、產業集中度、個股beta，並推估大盤下跌20%時的影響幅度。</p>
+            <button type="button" id="portfolio-analysis-btn" class="btn-accent">執行組合分析</button>
+            <div class="search-status" id="portfolio-analysis-status">
+              <span class="conn-dot" id="portfolio-analysis-conn-dot"></span>
+              <span id="portfolio-analysis-status-text">尚未執行</span>
+            </div>
+            <div class="result-area" id="portfolio-analysis-result">
+              <p class="result-empty">分析結果會顯示在這裡。</p>
+            </div>
+          </div>
+        </div>
+
         <div class="report-row portfolio-row">
           <div class="card">
             <div class="card-head"><h3>新增持股</h3></div>
@@ -206,6 +241,6 @@
 
 <div class="chart-tooltip" id="chart-tooltip" hidden></div>
 
-<script src="assets/app.js?v=20261103a" defer></script>
+<script src="assets/app.js?v=20261104a" defer></script>
 </body>
 </html>
