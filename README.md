@@ -50,7 +50,7 @@ n8n（透過 Zeabur）本身已經會針對請求動態回應 CORS header，所�
 `hot-stocks` webhook 不需要驗證即可呼叫，要重新產生快照可以執行：
 
 ```bash
-curl -s "https://kailinstock.zeabur.app/webhook/hot-stocks" | python3 -m json.tool > data/snapshot.json
+curl -s "https://n8n-production-b503.up.railway.app/webhook/hot-stocks" | python3 -m json.tool > data/snapshot.json
 ```
 
 ## 個股分析頁面
