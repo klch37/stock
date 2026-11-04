@@ -135,15 +135,20 @@ function renderOverview(){
   const tiles = [
     { label: '大盤日期', value: fmtDate(SNAPSHOT.marketDate), sub: '資料快照時間' },
     { label: '統計區間', value: range, sub: `共 ${dates.length} 個交易日` },
-    { label: '觀察股票數', value: SNAPSHOT.marketStockCount.toLocaleString('zh-Hant-TW'), sub: '全市場個股' },
-    { label: '觀察 ETF 數', value: SNAPSHOT.marketETFCount.toLocaleString('zh-Hant-TW'), sub: '全市場 ETF' },
+    { label: '觀察股票數', value: SNAPSHOT.marketStockCount.toLocaleString('zh-Hant-TW'), sub: '全市場個股', countup: SNAPSHOT.marketStockCount },
+    { label: '觀察 ETF 數', value: SNAPSHOT.marketETFCount.toLocaleString('zh-Hant-TW'), sub: '全市場 ETF', countup: SNAPSHOT.marketETFCount },
   ];
-  document.getElementById('stat-grid').innerHTML = tiles.map(t => `
+  document.getElementById('stat-grid').innerHTML = tiles.map((t, i) => `
     <div class="stat-tile">
       <div class="stat-label">${t.label}</div>
-      <div class="stat-value mono">${t.value}</div>
+      <div class="stat-value mono" ${t.countup !== undefined ? `id="stat-tile-${i}"` : ''}>${t.countup !== undefined ? '' : t.value}</div>
       <div class="stat-sub">${t.sub}</div>
     </div>`).join('');
+  tiles.forEach((t, i) => {
+    if (t.countup !== undefined){
+      animateCountUp(document.getElementById(`stat-tile-${i}`), t.countup, v => Math.round(v).toLocaleString('zh-Hant-TW'));
+    }
+  });
 
   const spot = (it, kicker, blurbMd) => {
     const up = it.changePct >= 0;
@@ -158,6 +163,11 @@ function renderOverview(){
         <span class="spotlight-pct ${up ? 'up' : 'down'}">${up ? '▲' : '▼'} ${fmtPct(it.changePct)}</span>
       </div>
       <div class="spotlight-price mono">${fmtPrice(it.price)}</div>
+      <div class="spotlight-heat">
+        <span class="spotlight-heat-label">熱度分數</span>
+        <span class="spotlight-heat-track"><span class="spotlight-heat-fill" style="width:${Math.min(it.hotScore, 100)}%"></span></span>
+        <span class="spotlight-heat-num">${it.hotScore.toFixed(1)}</span>
+      </div>
       <div class="spotlight-blurb">${mdToHtml(blurbMd) || '目前尚無 AI 分析文字。'}</div>
       <button class="spotlight-link" data-jump="view-ranking">查看完整分析 →</button>
     </div>`;
@@ -171,6 +181,32 @@ function renderOverview(){
   document.getElementById('spotlight-grid').innerHTML =
     spot(topStock, '熱度冠軍 · 個股', stockBlurb) +
     spot(topEtf, '熱度冠軍 · ETF', etfBlurb);
+
+  renderHeatLeaderboard();
+}
+
+// 把熱門股+熱門ETF混在一起依熱度分數排名，做成總覽頁的「市場熱度排行」小圖表，
+// 讓首頁不只有兩張焦點卡，也有一眼就能掃視全局的視覺化內容。
+function renderHeatLeaderboard(){
+  const el = document.getElementById('heat-leaderboard');
+  if (!el) return;
+  const combined = [...SNAPSHOT.hotStocks, ...SNAPSHOT.hotETFs]
+    .map(it => ({ ...it, isETF: SNAPSHOT.hotETFs.includes(it) }))
+    .sort((a, b) => b.hotScore - a.hotScore)
+    .slice(0, 8);
+  const maxScore = Math.max(...combined.map(it => it.hotScore), 1);
+
+  el.innerHTML = combined.map((it, i) => {
+    const up = it.changePct >= 0;
+    const color = up ? 'var(--up)' : 'var(--down)';
+    const widthPct = (it.hotScore / maxScore * 100).toFixed(1);
+    return `
+    <div class="rank-bar-row" data-jump="view-ranking" style="cursor:pointer;">
+      <span class="rank-bar-name">${i + 1}. ${escapeHtml(it.name)}${it.isETF ? '<span class="heat-tag">ETF</span>' : ''}</span>
+      <span class="rank-bar-track"><span class="rank-bar-fill" style="width:${widthPct}%; background:${color};"></span></span>
+      <span class="rank-bar-pct mono">${it.hotScore.toFixed(1)}</span>
+    </div>`;
+  }).join('');
 }
 
 // ---------- ranking lists ----------

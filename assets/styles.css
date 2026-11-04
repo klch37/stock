@@ -296,11 +296,31 @@
     margin-bottom:28px;
   }
   .stat-tile{
-    background:var(--surface-1);
-    border:1px solid var(--border);
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
     border-radius:14px;
     padding:16px 18px;
     box-shadow:var(--shadow);
+    backdrop-filter:blur(18px) saturate(1.4);
+    -webkit-backdrop-filter:blur(18px) saturate(1.4);
+    position:relative;
+    overflow:hidden;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .stat-tile::before{
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
+    opacity:.5;
+  }
+  .stat-tile:hover{
+    transform:translateY(-2px);
+    border-color:var(--accent-soft);
+    box-shadow:0 1px 2px rgba(0,0,0,0.3), 0 16px 28px -14px rgba(0,0,0,0.5);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stat-tile{ transition:none; }
+    .stat-tile:hover{ transform:none; }
   }
   .stat-label{ font-size:12px; color:var(--ink-faint); margin-bottom:6px; }
   .stat-value{ font-family:"Roboto Mono",monospace; font-size:22px; font-weight:700; }
@@ -339,21 +359,66 @@
   .section-head .hint{ font-size:12px; color:var(--ink-faint); }
   .spotlight-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:32px; }
   .spotlight{
-    background:var(--surface-1);
-    border:1px solid var(--border);
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border);
     border-radius:16px;
     padding:22px 24px;
     box-shadow:var(--shadow);
     display:flex; flex-direction:column; gap:12px;
+    position:relative;
+    overflow:hidden;
+    backdrop-filter:blur(18px) saturate(1.4);
+    -webkit-backdrop-filter:blur(18px) saturate(1.4);
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
   }
-  .spotlight-kicker{ font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); font-weight:700; font-family:"Roboto Mono",monospace; }
-  .spotlight-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .spotlight::before{
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
+    opacity:.5;
+  }
+  /* 熱度冠軍專屬的角落光暈，呼應「今日焦點」的重要性 */
+  .spotlight::after{
+    content:'';
+    position:absolute; top:-40%; right:-20%; width:60%; height:140%;
+    background:radial-gradient(circle, var(--accent-soft), transparent 70%);
+    pointer-events:none;
+  }
+  .spotlight:hover{
+    transform:translateY(-3px);
+    border-color:var(--accent-soft);
+    box-shadow:0 1px 2px rgba(0,0,0,0.3), 0 22px 40px -18px rgba(0,0,0,0.55);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .spotlight{ transition:none; }
+    .spotlight:hover{ transform:none; }
+  }
+  .spotlight-kicker{ font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); font-weight:700; font-family:"Roboto Mono",monospace; position:relative; z-index:1; }
+  .spotlight-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; position:relative; z-index:1; }
   .spotlight-name{ font-size:21px; font-weight:700; }
   .spotlight-code{ font-family:"Roboto Mono",monospace; color:var(--ink-faint); font-size:12.5px; }
-  .spotlight-price{ font-family:"Roboto Mono",monospace; font-size:26px; font-weight:700; }
-  .spotlight-pct{ font-family:"Roboto Mono",monospace; font-weight:700; font-size:14px; padding:3px 9px; border-radius:8px; }
+  .spotlight-price{
+    font-family:"Roboto Mono",monospace; font-size:28px; font-weight:700; position:relative; z-index:1;
+    background:var(--gradient-accent);
+    background-size:200% auto;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+    animation:heroShine 6s ease-in-out infinite;
+    display:inline-block;
+  }
+  @media (prefers-reduced-motion: reduce){ .spotlight-price{ animation:none; } }
+  .spotlight-pct{ font-family:"Roboto Mono",monospace; font-weight:700; font-size:14px; padding:3px 9px; border-radius:8px; position:relative; z-index:1; }
   .spotlight-pct.up{ color:var(--up); background:var(--up-soft); }
   .spotlight-pct.down{ color:var(--down); background:var(--down-soft); }
+
+  /* 熱度分數量尺：讓焦點卡多一層可視化資訊，不只是文字 */
+  .spotlight-heat{ display:flex; align-items:center; gap:10px; position:relative; z-index:1; }
+  .spotlight-heat-label{ font-size:11px; color:var(--ink-faint); white-space:nowrap; }
+  .spotlight-heat-track{ flex:1; height:6px; border-radius:3px; background:var(--surface-2); overflow:hidden; }
+  .spotlight-heat-fill{
+    height:100%; border-radius:3px; background:var(--gradient-accent);
+    transform-origin:left center; animation:barGrow .8s cubic-bezier(.22,.8,.36,1) .3s both;
+  }
+  .spotlight-heat-num{ font-family:"Roboto Mono",monospace; font-size:12px; font-weight:700; color:var(--accent); white-space:nowrap; }
   .spotlight-blurb{
     font-size:13.5px; line-height:1.7; color:var(--ink-muted);
     display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
@@ -695,6 +760,17 @@
   .rank-bar-header span{ font-family:"Roboto Mono",monospace; color:var(--ink-muted); text-transform:none; letter-spacing:0; }
   .rank-bar-row{ display:grid; grid-template-columns:64px 1fr 44px; align-items:center; gap:8px; font-size:12px; margin-bottom:7px; cursor:pointer; }
   .rank-bar-name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink); }
+
+  /* 總覽頁「市場熱度排行」：名稱欄位比圖例用的版本寬，容得下排名數字+名稱+ETF標籤 */
+  #heat-leaderboard .rank-bar-row{ grid-template-columns:132px 1fr 52px; padding:6px 4px; border-radius:8px; transition:background-color .15s ease; }
+  #heat-leaderboard .rank-bar-row:hover{ background:var(--surface-2); }
+  #heat-leaderboard .rank-bar-pct{ font-weight:700; }
+  .heat-tag{
+    display:inline-block; margin-left:6px; padding:1px 5px; border-radius:5px;
+    font-size:9px; font-weight:700; letter-spacing:.3px;
+    background:var(--accent-soft); color:var(--accent);
+    vertical-align:middle;
+  }
   .rank-bar-track{ position:relative; height:7px; border-radius:4px; background:var(--surface-2); overflow:hidden; }
   .rank-bar-fill{ position:absolute; top:0; left:0; bottom:0; border-radius:4px; }
   .rank-bar-pct{ font-family:"Roboto Mono",monospace; font-size:11.5px; color:var(--ink-muted); text-align:right; }

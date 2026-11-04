@@ -7,7 +7,7 @@
 <meta name="description" content="Kailin 的台股熱門排行與 AI 分析追蹤面板，資料來自 n8n workflow（kailinstock）。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/styles.css?v=20261105a">
+<link rel="stylesheet" href="assets/styles.css?v=20261105b">
 </head>
 <body>
 
@@ -69,6 +69,14 @@
         <span class="hint">依熱度分數排序第一名</span>
       </div>
       <div class="spotlight-grid" id="spotlight-grid"></div>
+
+      <div class="card" style="margin-top:18px;">
+        <div class="card-head">
+          <h3>📶 今日市場熱度排行</h3>
+          <button type="button" class="spotlight-link" data-jump="view-ranking" style="background:none; border:none; cursor:pointer;">查看完整排行 →</button>
+        </div>
+        <div class="card-body prose" style="padding:18px 22px;" id="heat-leaderboard"></div>
+      </div>
     </section>
 
     <!-- ===== 熱門排行 ===== -->
@@ -241,6 +249,6 @@
 
 <div class="chart-tooltip" id="chart-tooltip" hidden></div>
 
-<script src="assets/app.js?v=20261105a" defer></script>
+<script src="assets/app.js?v=20261105b" defer></script>
 </body>
 </html>
