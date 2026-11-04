@@ -201,7 +201,7 @@ function renderRanking(){
   document.getElementById('ai-stocks').innerHTML = SNAPSHOT.stockAIAnalysis
     ? mdToHtml(SNAPSHOT.stockAIAnalysis) +
       '<div class="note">註：此分析由 n8n 內的 Claude 節點產生，來源回應若中途截斷，可能是該節點的輸出長度限制所致。</div>'
-    : '<p class="chart-empty">AI 分析產生中，通常需要 20～30 秒，請稍候…</p>';
+    : '<p class="chart-empty">AI 分析產生中，通常需要 20～30 秒，請稍候…</p><div class="skeleton-block"><div class="skeleton-line w-45"></div><div class="skeleton-line w-90"></div><div class="skeleton-line w-80"></div></div>';
 
   const etfSection = SNAPSHOT.etfAIAnalysis
     ? (findSection(SNAPSHOT.etfAIAnalysis, '熱門 ETF Top 5') || SNAPSHOT.etfAIAnalysis)
@@ -209,12 +209,12 @@ function renderRanking(){
   document.getElementById('ai-etfs').innerHTML = etfSection
     ? mdToHtml(etfSection) +
       '<div class="note">註：ETF 專屬分析同樣可能受來源回應長度限制而不完整。</div>'
-    : '<p class="chart-empty">AI 分析產生中，通常需要 20～30 秒，請稍候…</p>';
+    : '<p class="chart-empty">AI 分析產生中，通常需要 20～30 秒，請稍候…</p><div class="skeleton-block"><div class="skeleton-line w-45"></div><div class="skeleton-line w-90"></div><div class="skeleton-line w-80"></div></div>';
 
   document.getElementById('ai-opportunities').innerHTML = SNAPSHOT.tradeOpportunities
     ? mdToHtml(SNAPSHOT.tradeOpportunities) +
       '<div class="note">註：進場價格、停損、目標價皆由程式依技術指標（支撐壓力、ATR）計算得出，AI 僅負責解讀與排序，不構成投資建議。</div>'
-    : '<p class="chart-empty">交易機會掃描產生中，通常需要 60～90 秒（每檔都要抓技術面＋營收再交給 AI 比較），請稍候…</p>';
+    : '<p class="chart-empty">交易機會掃描產生中，通常需要 60～90 秒（每檔都要抓技術面＋營收再交給 AI 比較），請稍候…</p><div class="skeleton-block"><div class="skeleton-line w-45"></div><div class="skeleton-line w-90"></div><div class="skeleton-line w-80"></div></div>';
 }
 
 function renderAll(){
@@ -427,7 +427,7 @@ async function queryStock(code, name){
   searchBtn.disabled = true;
   statusText.textContent = `查詢中…（${name ? name + ' ' : ''}${code}）`;
   connDot.className = 'conn-dot';
-  resultArea.innerHTML = '<p class="result-empty">查詢中，請稍候（日線＋週線技術面／營收／法人／新聞都要抓並交給 AI 分析，約需 40～80 秒）…</p>';
+  resultArea.innerHTML = '<p class="result-empty">查詢中，請稍候（日線＋週線技術面／營收／法人／新聞都要抓並交給 AI 分析，約需 40～80 秒）…</p><div class="skeleton-block"><div class="skeleton-line w-45"></div><div class="skeleton-line w-90"></div><div class="skeleton-line w-80"></div><div class="skeleton-line w-65"></div></div>';
 
   try {
     // 報告正常約需 40～80 秒，120 秒逾時留了充分餘裕才判定為卡住
@@ -496,7 +496,7 @@ async function runBacktest(){
   backtestBtn.disabled = true;
   backtestStatusText.textContent = `回測中…（${lastSearchedName || lastSearchedCode}）`;
   backtestConnDot.className = 'conn-dot';
-  backtestResultArea.innerHTML = '<p class="result-empty">回測中，請稍候（抓取最長6年歷史股價並跑兩種策略，約需 30～60 秒）…</p>';
+  backtestResultArea.innerHTML = '<p class="result-empty">回測中，請稍候（抓取最長6年歷史股價並跑兩種策略，約需 30～60 秒）…</p><div class="skeleton-block"><div class="skeleton-line w-45"></div><div class="skeleton-line w-90"></div><div class="skeleton-line w-80"></div><div class="skeleton-line w-65"></div></div>';
 
   try {
     const res = await fetchWithTimeout(`${BACKTEST_ENDPOINT}?stockCode=${encodeURIComponent(lastSearchedCode)}`, { method: 'POST' }, 100000);
@@ -646,6 +646,28 @@ function fmtSigned(n, digits = 2){
   return sign + n.toFixed(digits);
 }
 
+function prefersReducedMotion(){
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+// 數字滾動動畫：只用在少數「關鍵大數字」（Hero市值、持股統計卡），從0平滑滾到
+// 目標值，用 ease-out 讓動畫後段變慢比較好看。尊重 prefers-reduced-motion。
+function animateCountUp(el, targetValue, formatter, duration = 700){
+  if (!el || prefersReducedMotion() || !isFinite(targetValue)){
+    if (el) el.textContent = formatter(targetValue);
+    return;
+  }
+  const start = performance.now();
+  function tick(now){
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = formatter(targetValue * eased);
+    if (progress < 1) requestAnimationFrame(tick);
+    else el.textContent = formatter(targetValue);
+  }
+  requestAnimationFrame(tick);
+}
+
 function fmtCompact(n){
   if (Math.abs(n) >= 1e8) return (n / 1e8).toFixed(2) + '億';
   if (Math.abs(n) >= 1e4) return (n / 1e4).toFixed(1) + '萬';
@@ -772,7 +794,9 @@ function buildGainLossChart(rows){
   const body = data.map(r => {
     const up = r.gain >= 0;
     const widthPct = Math.min((Math.abs(r.gain) / maxAbs) * 50, 50).toFixed(1);
-    const sideStyle = up ? `left:50%; width:${widthPct}%;` : `right:50%; width:${widthPct}%;`;
+    const sideStyle = up
+      ? `left:50%; width:${widthPct}%; transform-origin:left center;`
+      : `right:50%; width:${widthPct}%; transform-origin:right center;`;
     const color = up ? 'var(--up)' : 'var(--down)';
     const ttRows = [`損益 ${fmtSigned(Math.round(r.gain), 0)}`, `報酬率 ${fmtSigned(r.gainPct ?? 0)}%`].map(escapeHtml).join('||');
     return `
@@ -838,9 +862,9 @@ function buildTrendChart(history){
     </div>
     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%; height:170px;">
       ${gridLines}
-      <path d="${gapPath}" fill="${gapColor}" fill-opacity="0.14" stroke="none"></path>
-      <path d="${costLine}" fill="none" style="stroke:var(--ink-faint);stroke-width:1.5;stroke-dasharray:4 3;"></path>
-      <path d="${valueLine}" fill="none" style="stroke:var(--accent);stroke-width:2;"></path>
+      <path class="trend-gap-fill" d="${gapPath}" fill="${gapColor}" fill-opacity="0.14" stroke="none"></path>
+      <path class="trend-line-cost" d="${costLine}" fill="none" style="stroke:var(--ink-faint);stroke-width:1.5;stroke-dasharray:4 3;"></path>
+      <path class="trend-line-value" d="${valueLine}" fill="none" style="stroke:var(--accent);stroke-width:2;"></path>
       ${dots}
     </svg>`;
 
@@ -1013,24 +1037,28 @@ async function renderPortfolio(){
 
   document.getElementById('portfolio-hero').innerHTML = `
     <div class="stat-label">總市值</div>
-    <div class="hero-value mono">${fmtPrice(Math.round(totalValue))}<span class="hero-pct" style="color:${gainUp ? 'var(--up)' : 'var(--down)'}">${fmtSigned(totalGainPct)}%</span></div>
+    <div class="hero-value mono"><span id="hero-value-num">${fmtPrice(Math.round(totalValue))}</span><span class="hero-pct" style="color:${gainUp ? 'var(--up)' : 'var(--down)'}">${fmtSigned(totalGainPct)}%</span></div>
     <div class="stat-sub">總成本 ${fmtPrice(Math.round(totalCost))} · 損益 <span style="color:${gainUp ? 'var(--up)' : 'var(--down)'}">${fmtSigned(Math.round(totalGain), 0)}</span></div>
   `;
+  animateCountUp(document.getElementById('hero-value-num'), totalValue, v => fmtPrice(Math.round(v)));
 
   portfolioStatsEl.innerHTML = `
     <div class="stat-tile">
       <div class="stat-label">總成本</div>
-      <div class="stat-value mono">${fmtPrice(Math.round(totalCost))}</div>
+      <div class="stat-value mono" id="stat-total-cost"></div>
     </div>
     <div class="stat-tile">
       <div class="stat-label">總損益</div>
-      <div class="stat-value mono" style="color:${gainUp ? 'var(--up)' : 'var(--down)'}">${fmtSigned(Math.round(totalGain), 0)}</div>
+      <div class="stat-value mono" id="stat-total-gain" style="color:${gainUp ? 'var(--up)' : 'var(--down)'}"></div>
     </div>
     <div class="stat-tile">
       <div class="stat-label">總報酬率</div>
-      <div class="stat-value mono" style="color:${gainUp ? 'var(--up)' : 'var(--down)'}">${fmtSigned(totalGainPct)}%</div>
+      <div class="stat-value mono" id="stat-total-gain-pct" style="color:${gainUp ? 'var(--up)' : 'var(--down)'}"></div>
     </div>
   `;
+  animateCountUp(document.getElementById('stat-total-cost'), totalCost, v => fmtPrice(Math.round(v)));
+  animateCountUp(document.getElementById('stat-total-gain'), totalGain, v => fmtSigned(Math.round(v), 0));
+  animateCountUp(document.getElementById('stat-total-gain-pct'), totalGainPct, v => fmtSigned(v) + '%');
 
   const allocEl = document.getElementById('chart-allocation');
   const glEl = document.getElementById('chart-gainloss');
@@ -1197,7 +1225,7 @@ async function runPortfolioAnalysis(){
   portfolioAnalysisBtn.disabled = true;
   portfolioAnalysisStatusText.textContent = '分析中…';
   portfolioAnalysisConnDot.className = 'conn-dot';
-  portfolioAnalysisResult.innerHTML = '<p class="result-empty">分析中，請稍候（抓取每檔持股近1年股價並計算相關性，約需 20～40 秒）…</p>';
+  portfolioAnalysisResult.innerHTML = '<p class="result-empty">分析中，請稍候（抓取每檔持股近1年股價並計算相關性，約需 20～40 秒）…</p><div class="skeleton-block"><div class="skeleton-line w-45"></div><div class="skeleton-line w-90"></div><div class="skeleton-line w-80"></div><div class="skeleton-line w-65"></div></div>';
 
   try {
     const res = await fetchWithTimeout(`${PORTFOLIO_ANALYSIS_ENDPOINT}?profileId=${encodeURIComponent(profileId)}`, { cache: 'no-store' }, 80000);
