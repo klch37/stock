@@ -4,13 +4,13 @@
 // stock-analysis webhook。拆成三個端點平行抓，排行榜數字先顯示，AI 分析陸續補上。
 // 若即時抓取失敗（網路問題、n8n 主機異常等），會自動退回 data/snapshot.json 內的快照資料。
 
-const HOT_STOCKS_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks";
-const AI_STOCK_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks-ai-stock";
-const AI_ETF_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks-ai-etf";
-const AI_OPPORTUNITIES_ENDPOINT = "https://kailinstock.zeabur.app/webhook/hot-stocks-opportunities";
-const BACKTEST_ENDPOINT = "https://kailinstock.zeabur.app/webhook/backtest";
-const PORTFOLIO_ANALYSIS_ENDPOINT = "https://kailinstock.zeabur.app/webhook/portfolio-analysis";
-const STOCK_ANALYSIS_ENDPOINT = "https://kailinstock.zeabur.app/webhook/stock-analysis";
+const HOT_STOCKS_ENDPOINT = "https://n8n-production-b503.up.railway.app/webhook/hot-stocks";
+const AI_STOCK_ENDPOINT = "https://n8n-production-b503.up.railway.app/webhook/hot-stocks-ai-stock";
+const AI_ETF_ENDPOINT = "https://n8n-production-b503.up.railway.app/webhook/hot-stocks-ai-etf";
+const AI_OPPORTUNITIES_ENDPOINT = "https://n8n-production-b503.up.railway.app/webhook/hot-stocks-opportunities";
+const BACKTEST_ENDPOINT = "https://n8n-production-b503.up.railway.app/webhook/backtest";
+const PORTFOLIO_ANALYSIS_ENDPOINT = "https://n8n-production-b503.up.railway.app/webhook/portfolio-analysis";
+const STOCK_ANALYSIS_ENDPOINT = "https://n8n-production-b503.up.railway.app/webhook/stock-analysis";
 const LOCAL_SNAPSHOT_PATH = "data/snapshot.json";
 
 // 內建保底快照：即使 data/snapshot.json 也抓不到（例如直接雙擊開啟 index.html，
@@ -569,7 +569,7 @@ backtestBtn.addEventListener('click', runBacktest);
 loadStockList();
 
 // ---------- portfolio ----------
-const PORTFOLIO_ENDPOINT = "https://kailinstock.zeabur.app/webhook/portfolio";
+const PORTFOLIO_ENDPOINT = "https://n8n-production-b503.up.railway.app/webhook/portfolio";
 const PROFILE_STORAGE_KEY = "stockRadar.profileId";
 const PRICE_CACHE_TTL_MS = 5 * 60 * 1000;
 
