@@ -43,14 +43,14 @@ python3 -m http.server 8000
 2. 嘗試直接呼叫 n8n 的 `hot-stocks` webhook 拿即時資料，成功就覆蓋畫面（只在頁面載入/重新整理時抓一次，**不會**背景持續輪詢——這個 webhook 背後會呼叫 Claude API，之前曾經因為輪詢太頻繁在短時間內把 Anthropic 額度耗盡，所以改成只在真的有人開頁面時才抓）
 3. 若即時抓取失敗（例如 n8n 尚未開放 CORS），畫面會維持顯示快照，並在右上角標示「快照資料」而非「即時」
 
-n8n（透過 Zeabur）本身已經會針對請求動態回應 CORS header，所以瀏覽器直接呼叫不會被擋。如果之後真的遇到 CORS 錯誤（例如換了 n8n 主機），畫面會自動退回快照資料，不會整個壞掉。
+n8n（目前部署在 Railway，2026/11 前曾用 Zeabur，因對方即將停止服務而搬遷）本身已經會針對請求動態回應 CORS header，所以瀏覽器直接呼叫不會被擋。如果之後真的遇到 CORS 錯誤（例如又換了 n8n 主機），畫面會自動退回快照資料，不會整個壞掉。
 
 ### 更新 `data/snapshot.json`（快照備援）
 
 `hot-stocks` webhook 不需要驗證即可呼叫，要重新產生快照可以執行：
 
 ```bash
-curl -s "https://kailinstock.zeabur.app/webhook/hot-stocks" | python3 -m json.tool > data/snapshot.json
+curl -s "https://n8n-production-b503.up.railway.app/webhook/hot-stocks" | python3 -m json.tool > data/snapshot.json
 ```
 
 ## 個股分析頁面
